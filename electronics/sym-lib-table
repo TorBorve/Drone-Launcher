@@ -3,4 +3,5 @@
   (lib (name "Teensy")(type "Legacy")(uri "${KIPRJMOD}/teensy_library/teensy.lib")(options "")(descr ""))
   (lib (name "drone_launcher-eagle-import")(type "KiCad")(uri "${KIPRJMOD}/drone_launcher-eagle-import.kicad_sym")(options "")(descr ""))
   (lib (name "Adafruit_MCP23017")(type "KiCad")(uri "${KIPRJMOD}/Adafruit_MCP23017.kicad_sym")(options "")(descr ""))
+  (lib (name "XT60-M")(type "KiCad")(uri "${KIPRJMOD}/Connector_XT60.pretty/XT60-M.kicad_sym")(options "")(descr ""))
 )

@@ -2,4 +2,5 @@
   (version 7)
   (lib (name "teensy")(type "KiCad")(uri "${KIPRJMOD}/teensy.pretty")(options "")(descr ""))
   (lib (name "Adafruit_MCP23017_Breakout")(type "KiCad")(uri "${KIPRJMOD}/Adafruit_MCP23017_Breakout.pretty")(options "")(descr ""))
+  (lib (name "Connector_XT60")(type "KiCad")(uri "${KIPRJMOD}/Connector_XT60.pretty")(options "")(descr ""))
 )
