@@ -1,56 +1,38 @@
 #include <Arduino.h>
 
-#include "Button.h"
+#include "Buttons.h"
 #include "LaunchUnit.h"
 #include "cmath"
 
-#define SAFETY_SERVO_PIN 2
-#define SAFETY_BUTTON_PIN 3
-#define TRIGGER_BUTTON_PIN 20
+// #include <TeensyThreads.h>
+
+#define SAFETY_SERVO_PIN 1
+// #define SAFETY_BUTTON_PIN 3
+// #define TRIGGER_BUTTON_PIN 20
 #define TRIGGER_SERVO_PIN 21
-#define SAFETY_SERVO_MIN_ANGLE 163
-#define SAFETY_SERVO_MAX_ANGLE 150
+// #define SAFETY_SERVO_MIN_ANGLE 163
+// #define SAFETY_SERVO_MAX_ANGLE 150
 
-Button triggerBtn{TRIGGER_BUTTON_PIN};
-Button safetyBtn{SAFETY_BUTTON_PIN};
-Servo triggerServo;
-// LaunchUnit launchUnit{TRIGGER_SERVO_PIN};
-Servo safetyServo;
+#define REAR_SWITCH_PIN 3
+#define SAFETY_SWITCH_PIN 4
+#define FRONT_SWITCH_PIN 5
 
+#define LED_PIN     2
+#define NUM_LEDS    6
+
+CRGB leds[NUM_LEDS];
+
+LaunchUnit launchUnit{TRIGGER_SERVO_PIN, SAFETY_SERVO_PIN, REAR_SWITCH_PIN, SAFETY_SWITCH_PIN, FRONT_SWITCH_PIN, leds[0]};
 
 void setup() {
     delay(1000);
     Serial.println("Setup");
-    triggerServo.attach(TRIGGER_SERVO_PIN);
-    triggerServo.write(LU_SERVO_LOADED);
-    safetyServo.attach(SAFETY_SERVO_PIN);
-    safetyServo.write(SAFETY_SERVO_MIN_ANGLE);
+    FastLED.addLeds<WS2812, LED_PIN, GRB>(leds, NUM_LEDS);
+    FastLED.show();
 }
 
 void loop() {
     uint32_t now = millis();
-    safetyBtn.poll(now);
-    triggerBtn.poll(now);
-    if (triggerBtn.wasPressed()) {
-        Serial.println("Trigger Btn pressed");
-        if (triggerServo.read() == LU_SERVO_LOADED) {
-            triggerServo.write(LU_SERVO_TRIGGERED);
-        } else {
-            triggerServo.write(LU_SERVO_LOADED);
-        }
-        // launchUnit.launch();
-        triggerBtn.reset();
-        delay(3000);
-    }
-    if (safetyBtn.wasPressed()) {
-        Serial.println("Safety btn pressed");
-
-        if (std::fabs(safetyServo.read() - SAFETY_SERVO_MIN_ANGLE) < 5) {
-            safetyServo.write(SAFETY_SERVO_MAX_ANGLE);
-        } else {
-            safetyServo.write(SAFETY_SERVO_MIN_ANGLE);
-        }
-        safetyBtn.reset();
-        delay(3000);
-    }
+    launchUnit.update(now);
+    FastLED.show();
 }
