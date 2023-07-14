@@ -1,5 +1,7 @@
 #include "Leds.h"
 
+#include "Pins.h"
+
 #define BLINK_INTERVAL 500
 
 ////////////////////////////////////////
@@ -14,7 +16,7 @@ void BaseLed::update(uint32_t now) {
         return;
     }
     bool prevIsOn = _isOn;
-    if (now % (2*BLINK_INTERVAL) > BLINK_INTERVAL) {
+    if (now % (2 * BLINK_INTERVAL) > BLINK_INTERVAL) {
         _isOn = true;
     } else {
         _isOn = false;
@@ -38,12 +40,15 @@ void BaseLed::setMode(Mode mode) {
 ////////////////////////////////////////
 
 Led::Led(uint8_t pin, Mode mode) : BaseLed(mode), _pin{pin} {
-    pinMode(_pin, OUTPUT);
+}
+
+void Led::init() {
+    pinModeExt(_pin, OUTPUT);
     writeToLed();
 }
 
 void Led::writeToLed() {
-    digitalWrite(_pin, _isOn ? HIGH : LOW);
+    digitalWriteExt(_pin, _isOn ? HIGH : LOW);
 }
 
 ////////////////////////////////////////

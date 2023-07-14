@@ -1,11 +1,10 @@
 #include "LaunchUnit.h"
 
 #define TRIGGER_SERVO_LOADED_ANGLE 0
-#define TRIGGER_SERVO_RELEASED_ANGLE 180
-#define SAFETY_SERVO_ON_ANGLE 0
-#define SAFETY_SERVO_OFF_ANGLE 180
+#define TRIGGER_SERVO_RELEASED_ANGLE 179
+#define SAFETY_SERVO_ON_ANGLE 150
+#define SAFETY_SERVO_OFF_ANGLE 163
 
-#define LU_UPDATE_INTERVAL 10
 
 LaunchUnit::LaunchUnit(uint8_t triggerServoPin,
                        uint8_t safetyServoPin,
@@ -17,11 +16,16 @@ LaunchUnit::LaunchUnit(uint8_t triggerServoPin,
                                           _safetySwitch{safetySwitchPin},
                                           _frontSwitch{frontSwitchPin},
                                           _statusLed{statusLed},
-                                          _prevUpdate{0},
                                           _isArmed{false} {
     _safetyServo.attach(safetyServoPin);
-    _safetyServo.write(SAFETY_SERVO_ON_ANGLE);
     _triggerServo.attach(triggerServoPin);
+}
+
+void LaunchUnit::init() {
+    _rearSwitch.init();
+    _safetySwitch.init();
+    _frontSwitch.init();
+    _safetyServo.write(SAFETY_SERVO_ON_ANGLE);
     _triggerServo.write(TRIGGER_SERVO_LOADED_ANGLE);
     updateLed();
 }
@@ -32,44 +36,27 @@ void LaunchUnit::update(uint32_t now) {
     _safetySwitch.poll(now);
     _frontSwitch.poll(now);
     _statusLed.update(now);
-
-    if (now - _prevUpdate < LU_UPDATE_INTERVAL) {
-        return;
-    }
-    _prevUpdate = now;
-
-    switch (_state) {
-        case State::FIRED:
-            break;
-        case State::LOADING:
-            break;
-        case State::LOADED:
-            break;
-        case State::FIRING:
-            break;
-        case State::UNLOADING:
-            break;
-        case State::ERROR:
-            break;
-        default:
-            Serial.println("ERROR: Invalid state in LaunchUnit::update");
-            break;
-    }
 }
 
 void LaunchUnit::fire() {
     Threads::Scope lock(_mutex);
-    threads.addThread(fireThread, this);
+    if (_state == State::LOADED && _isArmed && _rearSwitch.getState() && _safetySwitch.getState() && !_frontSwitch.getState()) {
+        threads.addThread(fireThread, this);
+    }
 }
 
 void LaunchUnit::load() {
     Threads::Scope lock(_mutex);
-    threads.addThread(LaunchUnit::loadThread, this);
+    if (_state == State::FIRED && !_isArmed && !_rearSwitch.getState() && _frontSwitch.getState()) {
+        threads.addThread(LaunchUnit::loadThread, this);
+    }
 }
 
 void LaunchUnit::unload() {
     Threads::Scope lock(_mutex);
-    threads.addThread(unloadThread, this);
+    if (_state == State::LOADED && !_isArmed && _rearSwitch.getState() && _safetySwitch.getState() && !_frontSwitch.getState()) {
+        threads.addThread(unloadThread, this);
+    }
 }
 
 LaunchUnit::State LaunchUnit::getState() const {
@@ -175,10 +162,6 @@ void LaunchUnit::fireThread(void* arg) {
 void LaunchUnit::unloadThread(void* arg) {
     LaunchUnit* lu = (LaunchUnit*)arg;
     lu->_mutex.lock();
-    // if (lu->_state != State::LOADED) {  // add more stuff here
-    //     lu->_mutex.unlock();
-    //     return;
-    // }
     lu->_state = State::UNLOADING;
     lu->updateLed();
     lu->_triggerServo.write(TRIGGER_SERVO_RELEASED_ANGLE);

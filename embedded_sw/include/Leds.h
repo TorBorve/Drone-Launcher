@@ -30,6 +30,7 @@ class BaseLed {
 class Led : public BaseLed {
    public:
     Led(uint8_t pin, Mode mode = Mode::OFF);
+    void init();
 
    protected:
     virtual void writeToLed() override;

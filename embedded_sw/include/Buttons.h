@@ -15,6 +15,7 @@ class Switch {
 
    public:
     Switch(uint8_t pin);
+    void init();
     void poll(uint32_t now);                         // call periodically to refresh the button state
     virtual bool hasEvent() const { return _hasChanged; }  // return the latch state
     void clearEvent() {_hasChanged = false;}
