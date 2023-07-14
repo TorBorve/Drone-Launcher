@@ -38,7 +38,7 @@ void Switch::poll(uint32_t now) {
 
 bool Switch::calcBoolState(float state, bool boolState) {
     float bias = -FILTER_BIAS * (2 * (int)boolState - 1);  // last part is to set correct sign of bias.
-    return state > (0.5 + FILTER_BIAS) ? true : false;
+    return state > (0.5 + bias) ? true : false;
 }
 
 // reset the button
