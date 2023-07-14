@@ -25,12 +25,14 @@ CRGB leds[NUM_LEDS];
 LaunchUnit launchUnit{TRIGGER_SERVO_PIN, SAFETY_SERVO_PIN, REAR_SWITCH_PIN, SAFETY_SWITCH_PIN, FRONT_SWITCH_PIN, leds[0]};
 
 void setup() {
+    delay(3000);
+    Serial.println("Setup started");
     pins::setup();
-    delay(1000);
-    Serial.println("Setup");
     FastLED.addLeds<WS2812, LED_PIN, GRB>(leds, NUM_LEDS);
     launchUnit.init();
     FastLED.show();
+    Serial.println("Setup complete");
+    launchUnit.load();
 }
 
 void loop() {
