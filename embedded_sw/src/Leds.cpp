@@ -6,13 +6,21 @@
 // BaseLed
 ////////////////////////////////////////
 
-BaseLed::BaseLed(Mode mode) : _mode{mode}, _isOn{mode == Mode::ON}, _prevBlink(0) {
+BaseLed::BaseLed(Mode mode) : _mode{mode}, _isOn{mode == Mode::ON} {
 }
 
 void BaseLed::update(uint32_t now) {
-    if (_mode == Mode::BLINK && now - _prevBlink > BLINK_INTERVAL) {
-        _prevBlink = now;
-        _isOn = !_isOn;
+    if (_mode == Mode::ON || _mode == Mode::OFF) {
+        return;
+    }
+    bool prevIsOn = _isOn;
+    if (now % (2*BLINK_INTERVAL) > BLINK_INTERVAL) {
+        _isOn = true;
+    } else {
+        _isOn = false;
+    }
+
+    if (prevIsOn != _isOn) {
         writeToLed();
     }
 }

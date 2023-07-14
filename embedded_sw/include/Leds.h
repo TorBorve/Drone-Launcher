@@ -21,7 +21,6 @@ class BaseLed {
     virtual void writeToLed() = 0;
     Mode _mode;
     bool _isOn;
-    uint32_t _prevBlink;
 };
 
 ////////////////////////////////////////
