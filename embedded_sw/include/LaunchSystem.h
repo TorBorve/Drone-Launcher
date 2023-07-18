@@ -17,6 +17,7 @@ class LaunchSystem {
     void unload(uint8_t launchUnitId);
 
    private:
+   #pragma message "TODO: Add vector containing available drones"
     LaunchUnit _launchUnits[LS_NUM_UNITS];
     DroneId _loadedDroneIds[LS_NUM_UNITS];
     CRGB _statusLeds[LS_NUM_UNITS];
