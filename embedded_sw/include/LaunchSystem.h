@@ -25,6 +25,9 @@ class LaunchSystem {
     void fire(uint8_t launchUnitId);
     void load(uint8_t launchUnitId, DroneId droneId);
     void unload(uint8_t launchUnitId);
+    bool isArmed() const { return _isArmed;}
+    LaunchUnit::State getLaunchUnitState(uint8_t launchUnitId) const { return _launchUnits[launchUnitId].getState(); }
+    DroneId getLoadedDroneId(uint8_t launchUnitId) const { return _loadedDroneIds[launchUnitId]; }
 
    private:
     LaunchUnit _launchUnits[LS_NUM_UNITS];
