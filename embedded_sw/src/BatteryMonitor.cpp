@@ -11,7 +11,7 @@
 #define BRIGHTNESS  64
 #define LED_TYPE    WS2812
 #define COLOR_ORDER GRB
-#define UPDATE_INTERVAL 10
+#define UPDATE_INTERVAL 1000
 
 
 BatteryMonitor batteryMonitor;
