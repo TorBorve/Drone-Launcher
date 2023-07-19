@@ -36,7 +36,20 @@ void Communicator::init() {
 void Communicator::update(uint32_t now) {
     if (_init && now - _prevUpdate > COM_UPDATE_INTERVAL) {
         _prevUpdate = now;
-        _statusMsg.data = 0;
+        static drone_launcher_msgs_pkg::LaunchUnitStatus luStatusMsg;
+        // _statusMsg.header.stamp = nh.now();
+        // _statusMsg.header.frame_id = "drone_launcher1";
+        // _statusMsg.armed = false;
+        // _statusMsg.batteryVoltage = 24.0;
+        // _statusMsg.gps.altitude = 10;
+        // _statusMsg.gps.latitude = 0;
+        // _statusMsg.gps.longitude = 0;
+        // _statusMsg.orientation.w = 1;
+        // luStatusMsg.state = drone_launcher_msgs_pkg::LaunchUnitStatus::STATE_LOADED;
+        // luStatusMsg.loadedDroneId = -1;
+        // _statusMsg.launchUnits = &luStatusMsg;
+        // _statusMsg.launchUnits_length = 1;
+
         _statusPub.publish(&_statusMsg);
         nh.spinOnce();  // Not thread safe since nh is used in logging.
         _aliveLed.update(now);

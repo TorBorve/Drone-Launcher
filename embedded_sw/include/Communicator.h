@@ -7,6 +7,7 @@
 #include <TeensyThreads.h>
 
 #include "Leds.h"
+#include "drone_launcher_msgs_pkg/LauncherStatus.h"
 
 
 class Communicator {
@@ -25,7 +26,7 @@ class Communicator {
     ros::Subscriber<std_msgs::UInt8> _fireSub;
     ros::Subscriber<std_msgs::UInt8> _loadSub;
     ros::Subscriber<std_msgs::UInt8> _unloadSub;
-    std_msgs::UInt8 _statusMsg;
+    drone_launcher_msgs_pkg::LauncherStatus _statusMsg;
     bool _init;
     uint32_t _prevUpdate;
     Led _aliveLed;
