@@ -3,14 +3,13 @@
 #include "Pins.h"
 #include "LaunchSystem.h"
 #include "Communicator.h"
+#include "Log.h"
 
 void setup() {
-    delay(3000);
-    // Serial.println("Setup started");
     pins::setup();
-    launchSystem.init();
     communicator.init();
-    Serial.println("Setup complete");
+    launchSystem.init();
+    LOG_INFO("Startup complete");
 }
 
 void loop() {

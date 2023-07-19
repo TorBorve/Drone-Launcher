@@ -4,6 +4,8 @@
 #include <ros.h>
 #include <std_msgs/UInt8.h>
 
+#include <TeensyThreads.h>
+
 #include "Leds.h"
 
 
@@ -12,7 +14,8 @@ class Communicator {
     Communicator();
     void init();
     void update(uint32_t now);
-    ros::NodeHandle _nh;
+    ros::NodeHandle nh;
+    mutable Threads::Mutex mutex;
  private:
     static void fireCallback(const std_msgs::UInt8& msg);
     static void loadCallback(const std_msgs::UInt8& msg);
