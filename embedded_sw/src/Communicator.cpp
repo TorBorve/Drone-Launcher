@@ -1,8 +1,8 @@
 #include "Communicator.h"
 
 #include "LaunchSystem.h"
-#include "Pins.h"
 #include "Log.h"
+#include "Pins.h"
 
 #define COM_UPDATE_INTERVAL 100
 
@@ -18,15 +18,18 @@ Communicator::Communicator() : nh{},
                                _aliveLed{PIN_LED_ALIVE, BaseLed::Mode::BLINK} {}
 
 void Communicator::init() {
-    Threads::Scope lock{mutex};
     if (!_init) {
-        nh.initNode();
-        nh.advertise(_statusPub);
-        nh.subscribe(_fireSub);
-        nh.subscribe(_loadSub);
-        nh.subscribe(_unloadSub);
+        {
+            Threads::Scope lock{mutex};
+            nh.initNode();
+            nh.advertise(_statusPub);
+            nh.subscribe(_fireSub);
+            nh.subscribe(_loadSub);
+            nh.subscribe(_unloadSub);
+        }
         _aliveLed.init();
         _init = true;
+        LOG_INFO("Communicator initialized");
     }
 }
 
@@ -35,22 +38,22 @@ void Communicator::update(uint32_t now) {
         _prevUpdate = now;
         _statusMsg.data = 0;
         _statusPub.publish(&_statusMsg);
-        nh.spinOnce(); // Not thread safe since nh is used in logging.
+        nh.spinOnce();  // Not thread safe since nh is used in logging.
         _aliveLed.update(now);
     }
 }
 
 void Communicator::fireCallback(const std_msgs::UInt8& msg) {
-    LOG_INFO("Fire callback");
+    LOG_INFO("Received fire message");
     launchSystem.fire(msg.data);
 }
 
 void Communicator::loadCallback(const std_msgs::UInt8& msg) {
-    LOG_INFO("Load callback");
+    LOG_INFO("Received load message");
     launchSystem.load(msg.data, 0);
 }
 
 void Communicator::unloadCallback(const std_msgs::UInt8& msg) {
-    LOG_INFO("Unload callback");
+    LOG_INFO("Received unload message");
     launchSystem.unload(msg.data);
 }

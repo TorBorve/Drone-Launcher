@@ -6,8 +6,8 @@
 #include "Log.h"
 
 void setup() {
-    pins::setup();
     communicator.init();
+    pins::setup();
     launchSystem.init();
     LOG_INFO("Startup complete");
 }

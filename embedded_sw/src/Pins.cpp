@@ -13,5 +13,6 @@ void setup() {
             delay(1000);
         }
     }
+    LOG_INFO("Pins initialized");
 }
 }  // namespace pins

@@ -2,6 +2,8 @@
 
 #include <FastLED.h>
 
+#include "Log.h"
+
 #define LS_UPDATE_INTERVAL 50
 
 LaunchSystem launchSystem;
@@ -59,6 +61,7 @@ void LaunchSystem::init() {
     _armSwitch.init();
     FastLED.addLeds<WS2812, PIN_DRONE_LEDS, GRB>(_statusLeds, LS_NUM_UNITS);
     FastLED.show();
+    LOG_INFO("Launch system initialized");
 }
 
 void LaunchSystem::update(uint32_t now) {

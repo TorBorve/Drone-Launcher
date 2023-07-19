@@ -1,10 +1,11 @@
 #include "LaunchUnit.h"
 
+#include "Log.h"
+
 #define TRIGGER_SERVO_LOADED_ANGLE 0
 #define TRIGGER_SERVO_RELEASED_ANGLE 179
 #define SAFETY_SERVO_ON_ANGLE 150
 #define SAFETY_SERVO_OFF_ANGLE 163
-
 
 LaunchUnit::LaunchUnit(uint8_t triggerServoPin,
                        uint8_t safetyServoPin,
@@ -28,6 +29,7 @@ void LaunchUnit::init() {
     _safetyServo.write(SAFETY_SERVO_ON_ANGLE);
     _triggerServo.write(TRIGGER_SERVO_LOADED_ANGLE);
     updateLed();
+    LOG_INFO("LaunchUnit initialized");
 }
 
 void LaunchUnit::update(uint32_t now) {
@@ -100,44 +102,42 @@ void LaunchUnit::updateLed() {
             _statusLed.setMode(RGBLed::Mode::BLINK);
             break;
         default:
-            Serial.println("ERROR: Invalid state in LaunchUnit::updateLed");
+            communicator.nh.loginfo("ERROR: Invalid state in LaunchUnit::updateLed");
             break;
     }
 }
 
 void LaunchUnit::loadThread(void* arg) {
+    LOG_INFO("Load thread started");
     LaunchUnit* lu = (LaunchUnit*)arg;
     lu->_mutex.lock();
-    Serial.println("Loading thread started");
     lu->_state = State::LOADING;
     lu->updateLed();
     lu->_safetyServo.write(SAFETY_SERVO_OFF_ANGLE);
     lu->_triggerServo.write(TRIGGER_SERVO_RELEASED_ANGLE);
-    Serial.println("Waiting for rear switch");
-    while (!(volatile bool)lu->_rearSwitch.getState()) {  // carefull about optimizer. Should use volatile??
+    while (!(volatile bool)lu->_rearSwitch.getState()) {  // carefull about optimizer. Need to use volatile
         lu->_mutex.unlock();
         delay(100);
         lu->_mutex.lock();
     }
     lu->_safetyServo.write(SAFETY_SERVO_ON_ANGLE);
-    Serial.println("Waiting for safety switch");
     while (!(volatile bool)lu->_safetySwitch.getState()) {
         lu->_mutex.unlock();
         delay(100);
         lu->_mutex.lock();
     }
     lu->_triggerServo.write(TRIGGER_SERVO_LOADED_ANGLE);
-    Serial.println("closing trigger arm");
     lu->_mutex.unlock();
     delay(1000);
     lu->_mutex.lock();
     lu->_state = State::LOADED;
     lu->updateLed();
-    Serial.println("Loading thread finished");
     lu->_mutex.unlock();
+    LOG_INFO("Load thread completed");
 }
 
 void LaunchUnit::fireThread(void* arg) {
+    LOG_INFO("Fire thread started");
     LaunchUnit* lu = (LaunchUnit*)arg;
     lu->_mutex.lock();
     lu->_state = State::FIRING;
@@ -157,9 +157,11 @@ void LaunchUnit::fireThread(void* arg) {
     lu->_state = State::FIRED;
     lu->updateLed();
     lu->_mutex.unlock();
+    LOG_INFO("Fire thread completed");
 }
 
 void LaunchUnit::unloadThread(void* arg) {
+    LOG_INFO("Unload thread started");
     LaunchUnit* lu = (LaunchUnit*)arg;
     lu->_mutex.lock();
     lu->_state = State::UNLOADING;
@@ -181,4 +183,5 @@ void LaunchUnit::unloadThread(void* arg) {
     lu->_state = State::FIRED;
     lu->updateLed();
     lu->_mutex.unlock();
+    LOG_INFO("Unload thread completed");
 }
