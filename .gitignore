@@ -1,2 +1,5 @@
 .pio
 .vscode/
+**/*.code-workspace
+**/*.zip
+**/*.lck
