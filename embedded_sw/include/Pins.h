@@ -10,7 +10,6 @@ namespace pins {
 
 extern Adafruit_MCP23X17 mcp;
 
-
 void setup();
 
 }  // namespace pins
@@ -30,8 +29,8 @@ void setup();
 
 #define PIN_F1R1_FRONT_SWITCHd
 
-#define PIN_SPI_CS 0
-#define PIN_SPI_MISO 1
+#define PIN_MY_SPI_CS 0
+#define PIN_MY_SPI_MISO 1
 #define PIN_F1R1_TRIGGER_SERVO 2
 #define PIN_F1R2_TRIGGER_SERVO 3
 #define PIN_F1R1_SAFETY_SERVO 4
@@ -45,8 +44,8 @@ void setup();
 #define PIN_F3R1_SAFETY_SERVO 12
 #define PIN_F3R2_SAFETY_SERVO 24
 #define PIN_BAT_LEDS 25
-#define PIN_SPI_MOSI 26
-#define PIN_SPI_SCK 27
+#define PIN_MY_SPI_MOSI 26
+#define PIN_MY_SPI_SCK 27
 #define PIN_MENU_BACK 28
 #define PIN_MENU_UP 29
 #define PIN_MENU_DOWN 30
