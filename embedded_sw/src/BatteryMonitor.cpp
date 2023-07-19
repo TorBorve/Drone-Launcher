@@ -3,8 +3,8 @@
 
 #define PIN_BAT_LEDS 25
 #define PIN_BAT_MEAS 23
-#define MIN_BAT_VOLTAGE 20
-#define MAX_BAT_VOLTAGE 26
+#define MIN_BAT_VOLTAGE (3.6 * 6)
+#define MAX_BAT_VOLTAGE (4.2 * 6)
 #define BRIGHTNESS  64
 #define LED_TYPE    WS2811
 #define COLOR_ORDER GRB
