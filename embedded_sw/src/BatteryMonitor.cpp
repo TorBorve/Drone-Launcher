@@ -58,10 +58,6 @@ void BatteryMonitor::update(uint32_t now) {
 
 void BatteryMonitor::readBat() {
     _voltage = analogRead(PIN_BAT_MEAS) * (3.3 / 1024.0) * BAT_SCALE;
-    Serial.printf("Pin: %d\n", analogRead(PIN_BAT_MEAS));
-    Serial.printf("Pin Volatage: %f\n", analogRead(PIN_BAT_MEAS) * (3.3 / 1024.0));
-    Serial.printf("Battery voltage: %f\n", _voltage);
-    Serial.printf("Battery percentage: %f\n", voltageToPercent(_voltage));
 }
 
 float BatteryMonitor::voltageToPercent(float voltage) {
