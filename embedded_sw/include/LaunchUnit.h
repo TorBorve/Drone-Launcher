@@ -18,12 +18,10 @@ public:
     void unload();
     State getState() const;
     void setArmed(bool isArmed);
-
-    
+private:
     static void loadThread(void* arg);
     static void fireThread(void* arg);
     static void unloadThread(void* arg);
-private:
     void updateLed();
     State _state;
     Servo _safetyServo;
