@@ -1,6 +1,7 @@
 #include "Communicator.h"
 
 #include "LaunchSystem.h"
+#include "BatteryMonitor.h"
 #include "Log.h"
 #include "Pins.h"
 
@@ -56,7 +57,7 @@ void Communicator::updateStatus(uint32_t now) {
     _statusMsg.header.stamp = nh.now();
     _statusMsg.header.frame_id = "drone_launcher1";
     _statusMsg.armed = launchSystem.isArmed();
-    _statusMsg.batteryVoltage = -1;  // TODO
+    _statusMsg.batteryVoltage = batteryMonitor.getVoltage();
     // _statusMsg.gps TODO
     // _statusMsg.orientation TODO
     for (uint8_t i = 0; i < LS_NUM_UNITS; i++) {
