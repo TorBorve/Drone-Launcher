@@ -1,5 +1,7 @@
 #include "Menu.h"
 
+#include "Log.h"
+
 #define MN_UPDATE_INTERVAL 30
 #define PIN_MENU_BACK 28
 #define PIN_MENU_UP 29
@@ -62,7 +64,7 @@ void Menu::init() {
     _downBtn.init();
     _enterBtn.init();
     if (!_lcd.begin(LCD_COLS, LCD_ROWS)) {
-        Serial.println("LCD init failed");
+        LOG_ERROR("LCD init failed");
         while (1)
             ;
     }
@@ -163,12 +165,12 @@ MD_Menu::value_t *Menu::cbLoadLaunchUnitId(MD_Menu::mnuId_t id, bool bGet) {
 }
 
 MD_Menu::value_t *Menu::cbLoadConfirm(MD_Menu::mnuId_t id, bool bGet) {
+    if (!bGet) { // function called twice. Once with bGet = true, once with bGet = false
+        return (nullptr);
+    }
     Menu *globalMenuPtr = &menu;
-    Serial.println("Confirm Load");
-    Serial.print("Drone ID: ");
-    Serial.println(globalMenuPtr->_loadDroneId);
-    Serial.print("Launch Unit ID: ");
-    Serial.println(globalMenuPtr->_loadLaunchUnitId);
+    LOG_INFO("Menu triggered load. DroneID: %d, LaunchUnitID: %d", globalMenuPtr->_loadDroneId, globalMenuPtr->_loadLaunchUnitId);
+    launchSystem.load(globalMenuPtr->_loadDroneId, globalMenuPtr->_loadLaunchUnitId);
     return (nullptr);
 }
 
@@ -183,9 +185,11 @@ MD_Menu::value_t *Menu::cbUnloadLaunchUnitId(MD_Menu::mnuId_t id, bool bGet) {
 }
 
 MD_Menu::value_t *Menu::cbUnloadConfirm(MD_Menu::mnuId_t id, bool bGet) {
+    if (!bGet) { // function called twice. Once with bGet = true, once with bGet = false
+        return (nullptr);
+    }
     Menu *globalMenuPtr = &menu;
-    Serial.println("Confirm Unload");
-    Serial.print("Launch Unit ID: ");
-    Serial.println(globalMenuPtr->_unloadLaunchUnitId);
+    LOG_INFO("Menu triggered unload, LaunchUnitID: %d", globalMenuPtr->_unloadLaunchUnitId);
+    launchSystem.unload(globalMenuPtr->_unloadLaunchUnitId);
     return (nullptr);
 }
