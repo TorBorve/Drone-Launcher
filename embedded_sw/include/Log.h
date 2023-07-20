@@ -4,18 +4,24 @@
 
 #include "Communicator.h"
 
-#define LOG_DEBUG(msg) { \
-    Threads::Scope lock(communicator.mutex); \
-    communicator.nh.logdebug(msg);}
+extern char _logBuffer[512];
 
-#define LOG_INFO(msg) { \
+#define LOG_DEBUG(...) { \
     Threads::Scope lock(communicator.mutex); \
-    communicator.nh.loginfo(msg);}
+    snprintf(_logBuffer, sizeof(_logBuffer)/sizeof(char), __VA_ARGS__); \
+    communicator.nh.logdebug(_logBuffer);}
 
-#define LOG_WARN(msg) { \
+#define LOG_INFO(...) { \
     Threads::Scope lock(communicator.mutex); \
-    communicator.nh.logwarn(msg);}
+    snprintf(_logBuffer, sizeof(_logBuffer)/sizeof(char), __VA_ARGS__); \
+    communicator.nh.loginfo(_logBuffer);}
 
-#define LOG_ERROR(msg) { \
+#define LOG_WARN(...) { \
     Threads::Scope lock(communicator.mutex); \
-    communicator.nh.logerror(msg);}
+    snprintf(_logBuffer, sizeof(_logBuffer)/sizeof(char), __VA_ARGS__); \
+    communicator.nh.logwarn(_logBuffer);}
+
+#define LOG_ERROR(...) { \
+    Threads::Scope lock(communicator.mutex); \
+    snprintf(_logBuffer, sizeof(_logBuffer)/sizeof(char), __VA_ARGS__); \
+    communicator.nh.logerror(_logBuffer);}
