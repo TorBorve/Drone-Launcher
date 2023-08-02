@@ -1,25 +1,26 @@
 #include <Arduino.h>
 
-#include "Pins.h"
 #include "LaunchSystem.h"
-#include "Communicator.h"
 #include "BatteryMonitor.h"
-#include "Menu.h"
+#include "Communicator.h"
 #include "Log.h"
+#include "Menu.h"
+#include "Pins.h"
+
 
 void setup() {
-    communicator.init();
     pins::setup();
     launchSystem.init();
-    menu.init();
     batteryMonitor.init();
-    LOG_INFO("Startup complete");
+    communicator.init();
+    menu.init();
+    LOG_INFO("Setup complete");
 }
 
 void loop() {
     uint32_t now = millis();
     launchSystem.update(now);
+    batteryMonitor.update(now);
     communicator.update(now);
     menu.update(now);
-    batteryMonitor.update(now);
 }

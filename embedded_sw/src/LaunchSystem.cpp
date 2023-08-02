@@ -21,30 +21,30 @@ LaunchSystem::LaunchSystem() : _launchUnits{
                                               _launchUnitPins[1][3],
                                               _launchUnitPins[1][4],
                                               _statusLeds[1]},
-                                   LaunchUnit{_launchUnitPins[2][0],
-                                              _launchUnitPins[2][1],
-                                              _launchUnitPins[2][2],
-                                              _launchUnitPins[2][3],
-                                              _launchUnitPins[2][4],
-                                              _statusLeds[2]},
-                                   LaunchUnit{_launchUnitPins[3][0],
-                                              _launchUnitPins[3][1],
-                                              _launchUnitPins[3][2],
-                                              _launchUnitPins[3][3],
-                                              _launchUnitPins[3][4],
-                                              _statusLeds[3]},
-                                   LaunchUnit{_launchUnitPins[4][0],
-                                              _launchUnitPins[4][1],
-                                              _launchUnitPins[4][2],
-                                              _launchUnitPins[4][3],
-                                              _launchUnitPins[4][4],
-                                              _statusLeds[4]},
-                                   LaunchUnit{_launchUnitPins[5][0],
-                                              _launchUnitPins[5][1],
-                                              _launchUnitPins[5][2],
-                                              _launchUnitPins[5][3],
-                                              _launchUnitPins[5][4],
-                                              _statusLeds[5]},
+                                //    LaunchUnit{_launchUnitPins[2][0],
+                                //               _launchUnitPins[2][1],
+                                //               _launchUnitPins[2][2],
+                                //               _launchUnitPins[2][3],
+                                //               _launchUnitPins[2][4],
+                                //               _statusLeds[2]},
+                                //    LaunchUnit{_launchUnitPins[3][0],
+                                //               _launchUnitPins[3][1],
+                                //               _launchUnitPins[3][2],
+                                //               _launchUnitPins[3][3],
+                                //               _launchUnitPins[3][4],
+                                //               _statusLeds[3]},
+                                //    LaunchUnit{_launchUnitPins[4][0],
+                                //               _launchUnitPins[4][1],
+                                //               _launchUnitPins[4][2],
+                                //               _launchUnitPins[4][3],
+                                //               _launchUnitPins[4][4],
+                                //               _statusLeds[4]},
+                                //    LaunchUnit{_launchUnitPins[5][0],
+                                //               _launchUnitPins[5][1],
+                                //               _launchUnitPins[5][2],
+                                //               _launchUnitPins[5][3],
+                                //               _launchUnitPins[5][4],
+                                //               _statusLeds[5]},
 
                                },
                                _armSwitch{PIN_ARM_SWITCH},
@@ -86,6 +86,8 @@ void LaunchSystem::fire(uint8_t launchUnitId) {
     if (_isArmed) {
         _launchUnits[launchUnitId].fire();
         _loadedDroneIds[launchUnitId] = 0;
+    } else {
+        LOG_WARN("Attempted to fire launch unit %d while launch system is not armed", launchUnitId);
     }
 }
 
@@ -94,6 +96,8 @@ void LaunchSystem::load(uint8_t launchUnitId, DroneId droneId) {
         _launchUnits[launchUnitId].load();
 #pragma warning "TODO: make sure load was successful...."
         _loadedDroneIds[launchUnitId] = droneId;  // TODO: make sure load was successful....
+    } else {
+        LOG_WARN("Attempted to load launch unit %d while launch system is armed", launchUnitId);
     }
 }
 

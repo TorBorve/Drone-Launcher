@@ -16,6 +16,8 @@ void setup();
 
 #define PINS_MCP_OFFSET 64
 
+#define PINS_MCP_ADDR 0x21
+
 #define pinModeExt(pin, mode) (pin >= PINS_MCP_OFFSET) ? pins::mcp.pinMode(pin - PINS_MCP_OFFSET, mode) : pinMode(pin, mode)
 
 #define digitalWriteExt(pin, value)  (pin >= PINS_MCP_OFFSET) ? pins::mcp.digitalWrite(pin - PINS_MCP_OFFSET, value) : digitalWrite(pin, value)
@@ -26,8 +28,6 @@ void setup();
 ///////////////////////////
 // Pin Mapping
 ///////////////////////////
-
-#define PIN_F1R1_FRONT_SWITCHd
 
 #define PIN_MY_SPI_CS 0
 #define PIN_MY_SPI_MISO 1

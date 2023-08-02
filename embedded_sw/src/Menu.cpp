@@ -1,6 +1,7 @@
 #include "Menu.h"
 
 #include "Log.h"
+#include "LaunchSystem.h"
 
 #define MN_UPDATE_INTERVAL 30
 #define PIN_MENU_BACK 28
