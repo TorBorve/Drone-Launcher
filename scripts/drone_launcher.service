@@ -1,0 +1,17 @@
+#tutorial https://medium.com/@benmorel/creating-a-linux-service-with-systemd-611b5c8b91d6
+[Unit]
+Description=Start communcation with drone launcher
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+#Put your username here
+User=odroid
+#update path to script here
+ExecStart=/usr/bin/env bash /home/odroid/catkin_ws/src/Drone-Launcher/scripts/odroid_startup.sh
+
+[Install]
+WantedBy=multi-user.target
