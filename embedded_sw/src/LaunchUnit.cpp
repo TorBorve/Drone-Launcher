@@ -203,18 +203,13 @@ void LaunchUnit::unloadThread(void* arg) {
         delay(100);
         lu->_mutex.lock();
     }
+    delay(500);
     lu->_safetyServo.write(SAFETY_SERVO_OFF_ANGLE);
     while (((volatile bool)lu->_safetySwitch.getState()) && !DL_DISSABLE_LM_SWITCH) {
         lu->_mutex.unlock();
         delay(100);
         lu->_mutex.lock();
     }
-    if (lu->_mirrored) {
-        lu->_triggerServo.write(TRIGGER_SERVO_LOADED_ANGLE_MIRROR);
-    } else {
-        lu->_triggerServo.write(TRIGGER_SERVO_LOADED_ANGLE);
-    }
-    lu->_safetyServo.write(SAFETY_SERVO_ON_ANGLE);
     lu->_state = State::FIRED;
     lu->updateLed();
     lu->_mutex.unlock();
