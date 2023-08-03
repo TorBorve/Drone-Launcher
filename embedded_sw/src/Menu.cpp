@@ -72,7 +72,7 @@ void Menu::init() {
     display(MD_Menu::DISP_INIT, nullptr);
     _menu.begin();
     _menu.setMenuWrap(true);
-    _menu.setTimeout(10000);
+    _menu.setTimeout(0);
     _menu.setAutoStart(true);
     _menu.runMenu(true);
 }
