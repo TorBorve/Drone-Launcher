@@ -158,6 +158,7 @@ void LaunchUnit::fireThread(void* arg) {
         delay(100);
         lu->_mutex.lock();
     }
+    delay(1000); // ensure that safety pin is completely off.
     lu->_triggerServo.write(TRIGGER_SERVO_RELEASED_ANGLE);
     // while (!(volatile bool)lu->_frontSwitch.getState() && DL_DISSABLE_LM_SWITCH) {
     //     lu->_mutex.unlock();
