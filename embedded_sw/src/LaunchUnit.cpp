@@ -19,20 +19,21 @@ LaunchUnit::LaunchUnit(uint8_t triggerServoPin,
                        uint8_t frontSwitchPin,
                        CRGB& statusLed,
                        bool mirrored) : _state{State::FIRED},
-                                          _rearSwitch{rearSwitchPin},
-                                          _safetySwitch{safetySwitchPin},
-                                          _frontSwitch{frontSwitchPin},
-                                          _statusLed{statusLed},
-                                          _isArmed{false},
-                                          _mirrored{mirrored} {
-    _safetyServo.attach(safetyServoPin);
-    _triggerServo.attach(triggerServoPin);
-}
+                                        _safetyServoPin{safetyServoPin},
+                                        _triggerServoPin{triggerServoPin},
+                                        _rearSwitch{rearSwitchPin},
+                                        _safetySwitch{safetySwitchPin},
+                                        _frontSwitch{frontSwitchPin},
+                                        _statusLed{statusLed},
+                                        _isArmed{false},
+                                        _mirrored{mirrored} {}
 
 void LaunchUnit::init() {
     _rearSwitch.init();
     _safetySwitch.init();
     _frontSwitch.init();
+    _safetyServo.attach(_safetyServoPin);
+    _triggerServo.attach(_triggerServoPin);
     _safetyServo.write(SAFETY_SERVO_ON_ANGLE);
     if (_mirrored) {
         _triggerServo.write(TRIGGER_SERVO_LOADED_ANGLE_MIRROR);
@@ -170,7 +171,7 @@ void LaunchUnit::fireThread(void* arg) {
         delay(100);
         lu->_mutex.lock();
     }
-    delay(1000); // ensure that safety pin is completely off.
+    delay(1000);  // ensure that safety pin is completely off.
     if (lu->_mirrored) {
         lu->_triggerServo.write(TRIGGER_SERVO_RELEASED_ANGLE_MIRROR);
     } else {

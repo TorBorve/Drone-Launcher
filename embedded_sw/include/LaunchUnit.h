@@ -26,11 +26,13 @@ private:
     State _state;
     Servo _safetyServo;
     Servo _triggerServo;
+    const uint8_t _safetyServoPin;
+    const uint8_t _triggerServoPin;
     Switch _rearSwitch;
     Switch _safetySwitch;
     Switch _frontSwitch;
     RGBLed _statusLed;
     bool _isArmed;
-    bool _mirrored;
+    const bool _mirrored;
     mutable Threads::Mutex _mutex;
 };
