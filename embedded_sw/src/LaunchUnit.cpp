@@ -5,6 +5,8 @@
 
 #define TRIGGER_SERVO_LOADED_ANGLE 179
 #define TRIGGER_SERVO_RELEASED_ANGLE 90
+#define TRIGGER_SERVO_LOADED_ANGLE_MIRROR 0
+#define TRIGGER_SERVO_RELEASED_ANGLE_MIRROR 90
 #define SAFETY_SERVO_ON_ANGLE 170
 #define SAFETY_SERVO_OFF_ANGLE 130
 
@@ -15,12 +17,14 @@ LaunchUnit::LaunchUnit(uint8_t triggerServoPin,
                        uint8_t rearSwitchPin,
                        uint8_t safetySwitchPin,
                        uint8_t frontSwitchPin,
-                       CRGB& statusLed) : _state{State::FIRED},
+                       CRGB& statusLed,
+                       bool mirrored) : _state{State::FIRED},
                                           _rearSwitch{rearSwitchPin},
                                           _safetySwitch{safetySwitchPin},
                                           _frontSwitch{frontSwitchPin},
                                           _statusLed{statusLed},
-                                          _isArmed{false} {
+                                          _isArmed{false},
+                                          _mirrored{mirrored} {
     _safetyServo.attach(safetyServoPin);
     _triggerServo.attach(triggerServoPin);
 }
@@ -30,7 +34,11 @@ void LaunchUnit::init() {
     _safetySwitch.init();
     _frontSwitch.init();
     _safetyServo.write(SAFETY_SERVO_ON_ANGLE);
-    _triggerServo.write(TRIGGER_SERVO_LOADED_ANGLE);
+    if (_mirrored) {
+        _triggerServo.write(TRIGGER_SERVO_LOADED_ANGLE_MIRROR);
+    } else {
+        _triggerServo.write(TRIGGER_SERVO_LOADED_ANGLE);
+    }
     updateLed();
     LOG_INFO("LaunchUnit initialized");
 }
@@ -124,7 +132,11 @@ void LaunchUnit::loadThread(void* arg) {
     lu->_state = State::LOADING;
     lu->updateLed();
     lu->_safetyServo.write(SAFETY_SERVO_OFF_ANGLE);
-    lu->_triggerServo.write(TRIGGER_SERVO_LOADED_ANGLE);
+    if (lu->_mirrored) {
+        lu->_triggerServo.write(TRIGGER_SERVO_LOADED_ANGLE_MIRROR);
+    } else {
+        lu->_triggerServo.write(TRIGGER_SERVO_LOADED_ANGLE);
+    }
     while (!(volatile bool)lu->_rearSwitch.getState() && !DL_DISSABLE_LM_SWITCH) {  // carefull about optimizer. Need to use volatile
         lu->_mutex.unlock();
         delay(100);
@@ -159,7 +171,11 @@ void LaunchUnit::fireThread(void* arg) {
         lu->_mutex.lock();
     }
     delay(1000); // ensure that safety pin is completely off.
-    lu->_triggerServo.write(TRIGGER_SERVO_RELEASED_ANGLE);
+    if (lu->_mirrored) {
+        lu->_triggerServo.write(TRIGGER_SERVO_RELEASED_ANGLE_MIRROR);
+    } else {
+        lu->_triggerServo.write(TRIGGER_SERVO_RELEASED_ANGLE);
+    }
     // while (!(volatile bool)lu->_frontSwitch.getState() && DL_DISSABLE_LM_SWITCH) {
     //     lu->_mutex.unlock();
     //     delay(100);
@@ -177,7 +193,11 @@ void LaunchUnit::unloadThread(void* arg) {
     lu->_mutex.lock();
     lu->_state = State::UNLOADING;
     lu->updateLed();
-    lu->_triggerServo.write(TRIGGER_SERVO_RELEASED_ANGLE);
+    if (lu->_mirrored) {
+        lu->_triggerServo.write(TRIGGER_SERVO_RELEASED_ANGLE_MIRROR);
+    } else {
+        lu->_triggerServo.write(TRIGGER_SERVO_RELEASED_ANGLE);
+    }
     while ((volatile bool)lu->_rearSwitch.getState()) {
         lu->_mutex.unlock();
         delay(100);
@@ -189,7 +209,11 @@ void LaunchUnit::unloadThread(void* arg) {
         delay(100);
         lu->_mutex.lock();
     }
-    lu->_triggerServo.write(TRIGGER_SERVO_LOADED_ANGLE);
+    if (lu->_mirrored) {
+        lu->_triggerServo.write(TRIGGER_SERVO_LOADED_ANGLE_MIRROR);
+    } else {
+        lu->_triggerServo.write(TRIGGER_SERVO_LOADED_ANGLE);
+    }
     lu->_safetyServo.write(SAFETY_SERVO_ON_ANGLE);
     lu->_state = State::FIRED;
     lu->updateLed();

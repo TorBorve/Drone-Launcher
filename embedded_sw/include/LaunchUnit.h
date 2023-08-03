@@ -10,7 +10,7 @@
 class LaunchUnit {
 public:
     enum class State : uint8_t {FIRED, LOADING, LOADED, FIRING, UNLOADING, ERROR};
-    LaunchUnit(uint8_t triggerServoPin, uint8_t safetyServoPin, uint8_t rearSwitchPin, uint8_t safetySwitchPin, uint8_t frontSwitchPin, CRGB& statusLed);
+    LaunchUnit(uint8_t triggerServoPin, uint8_t safetyServoPin, uint8_t rearSwitchPin, uint8_t safetySwitchPin, uint8_t frontSwitchPin, CRGB& statusLed, bool mirrored);
     void init();
     void update(uint32_t now);
     void fire();
@@ -31,5 +31,6 @@ private:
     Switch _frontSwitch;
     RGBLed _statusLed;
     bool _isArmed;
+    bool _mirrored;
     mutable Threads::Mutex _mutex;
 };
