@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0.2)
-project(drone_launcher_msgs_pkg)
+project(drone_launcher_pkg)
 
 find_package(catkin REQUIRED COMPONENTS
   roscpp
