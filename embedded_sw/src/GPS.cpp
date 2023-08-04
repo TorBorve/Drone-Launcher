@@ -1,20 +1,14 @@
-#include <TinyGPSPlus.h>
-
 #include "GPS.h"
-#include "Pins.h"
 #include <SoftwareSerial.h>
-#include <Arduino.h>
-
+#i
 #define UPDATE_INTERVAL 1000
-#define GPS_RX 21 // We RECIEVE - READ HERE
-#define GPS_TX 20 // GPS RECIEVES - WRITE HERE
 #define GPSBaud 38400
 #define GPS_SERIAL Serial4
 #define MAX_GPS_TIMEOUT 10000
 
 GPS gps;
 
-GPS::GPS() : _prevUpdate(0),_rx(GPS_RX), _tx(GPS_TX), _lat(0), _long(0), _last_loc_update(0),
+GPS::GPS() : _prevUpdate(0), _lat(0), _long(0), _last_loc_update(0),
             _alt(0), _last_alt_update(0), tiny_gps(), _date(), _last_date_update(0), _time(), _last_time_update(0),
             _speed(), _last_speed_update(0) {
     }

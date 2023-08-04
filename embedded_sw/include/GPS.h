@@ -1,5 +1,7 @@
 #pragma once
 #include <stdint.h>
+#include <TinyGPSPlus.h>
+
 typedef struct PositionArray {
     double lat;
     double lng;
@@ -17,8 +19,6 @@ typedef struct LastUpdateArray {
 class GPS {
     private:
         uint32_t _prevUpdate;
-        uint8_t _rx;
-        uint8_t _tx;
         double _lat;
         double _long;
         uint32_t _last_loc_update;
@@ -49,4 +49,4 @@ class GPS {
         GPS();
 };
 
-extern GPS gps;
+// extern GPS gps;
