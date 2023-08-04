@@ -27,7 +27,7 @@ generate_messages(
 
 catkin_package(
 #  INCLUDE_DIRS include
-#  LIBRARIES drone_launcher_msgs_pkg
+#  LIBRARIES drone_launcher_pkg
   CATKIN_DEPENDS message_runtime
 #  DEPENDS system_lib
 )

@@ -1,7 +1,7 @@
 #include "Communicator.h"
 
-#include "LaunchSystem.h"
 #include "BatteryMonitor.h"
+#include "LaunchSystem.h"
 #include "Log.h"
 #include "Pins.h"
 
@@ -84,17 +84,17 @@ void Communicator::unloadCallback(const std_msgs::UInt8& msg) {
 int8_t Communicator::toMsg(LaunchUnit::State state) {
     switch (state) {
         case LaunchUnit::State::FIRED:
-            return drone_launcher_msgs_pkg::LaunchUnitStatus::STATE_FIRED;
+            return drone_launcher_pkg::LaunchUnitStatus::STATE_FIRED;
         case LaunchUnit::State::LOADING:
-            return drone_launcher_msgs_pkg::LaunchUnitStatus::STATE_LOADING;
+            return drone_launcher_pkg::LaunchUnitStatus::STATE_LOADING;
         case LaunchUnit::State::LOADED:
-            return drone_launcher_msgs_pkg::LaunchUnitStatus::STATE_LOADED;
+            return drone_launcher_pkg::LaunchUnitStatus::STATE_LOADED;
         case LaunchUnit::State::FIRING:
-            return drone_launcher_msgs_pkg::LaunchUnitStatus::STATE_FIRING;
+            return drone_launcher_pkg::LaunchUnitStatus::STATE_FIRING;
         case LaunchUnit::State::UNLOADING:
-            return drone_launcher_msgs_pkg::LaunchUnitStatus::STATE_UNLOADING;
+            return drone_launcher_pkg::LaunchUnitStatus::STATE_UNLOADING;
         case LaunchUnit::State::ERROR:
-            return drone_launcher_msgs_pkg::LaunchUnitStatus::STATE_ERROR;
+            return drone_launcher_pkg::LaunchUnitStatus::STATE_ERROR;
         default:
             LOG_ERROR("Unknown launch unit state in toMsg funciton");
             return -1;
