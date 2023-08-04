@@ -94,7 +94,7 @@ void LaunchSystem::fire(uint8_t launchUnitId) {
 }
 
 void LaunchSystem::load(uint8_t launchUnitId, DroneId droneId) {
-    if (!_isArmed) {
+    if (!_isArmed && launchUnitId >= 0 && launchUnitId < LS_NUM_UNITS) {
         _launchUnits[launchUnitId].load();
 #pragma warning "TODO: make sure load was successful...."
         _loadedDroneIds[launchUnitId] = droneId;  // TODO: make sure load was successful....
@@ -104,7 +104,7 @@ void LaunchSystem::load(uint8_t launchUnitId, DroneId droneId) {
 }
 
 void LaunchSystem::unload(uint8_t launchUnitId) {
-    if (!_isArmed) {
+    if (!_isArmed && launchUnitId >= 0 && launchUnitId < LS_NUM_UNITS) {
         _launchUnits[launchUnitId].unload();
         _loadedDroneIds[launchUnitId] = 0;
     }

@@ -34,10 +34,10 @@ const MD_Menu::mnuItem_t Menu::mnuItm[] = {
 };
 
 const MD_Menu::mnuInput_t Menu::mnuInp[] = {
-    {20, "DroneID", MD_Menu::INP_INT, Menu::cbLoadDroneId, 4, 1, 0, 10, 0, 10, nullptr},
-    {21, "LaunchID", MD_Menu::INP_INT, Menu::cbLoadLaunchUnitId, 4, 1, 0, 6, 0, 10, nullptr},
+    {20, "DroneID", MD_Menu::INP_INT, Menu::cbLoadDroneId, 4, 1, 0, 15, 0, 10, nullptr},
+    {21, "LaunchID", MD_Menu::INP_INT, Menu::cbLoadLaunchUnitId, 4, 1, 0, LS_NUM_UNITS, 0, 10, nullptr},
     {22, "Confirm", MD_Menu::INP_RUN, Menu::cbLoadConfirm, 0, 0, 0, 0, 0, 0, nullptr},
-    {30, "LaunchID", MD_Menu::INP_INT, Menu::cbUnloadLaunchUnitId, 4, 1, 0, 6, 0, 10, nullptr},
+    {30, "LaunchID", MD_Menu::INP_INT, Menu::cbUnloadLaunchUnitId, 4, 1, 0, LS_NUM_UNITS, 0, 10, nullptr},
     {31, "Confirm", MD_Menu::INP_RUN, Menu::cbUnloadConfirm, 0, 0, 0, 0, 0, 0, nullptr},
 
 };
@@ -49,9 +49,9 @@ Menu::Menu(uint8_t backBtnPin,
                                        mnuHdr, ARRAY_SIZE(mnuHdr),
                                        mnuItm, ARRAY_SIZE(mnuItm),
                                        mnuInp, ARRAY_SIZE(mnuInp)},
-                                 _loadDroneId{0},
-                                 _loadLaunchUnitId{0},
-                                 _unloadLaunchUnitId{0},
+                                 _loadDroneId{1},
+                                 _loadLaunchUnitId{1},
+                                 _unloadLaunchUnitId{1},
                                  _lcd{0},
                                  _backBtn{backBtnPin},
                                  _enterBtn{enterBtnPin},
@@ -171,7 +171,7 @@ MD_Menu::value_t *Menu::cbLoadConfirm(MD_Menu::mnuId_t id, bool bGet) {
     }
     Menu *globalMenuPtr = &menu;
     LOG_INFO("Menu triggered load. DroneID: %d, LaunchUnitID: %d", globalMenuPtr->_loadDroneId, globalMenuPtr->_loadLaunchUnitId);
-    launchSystem.load(globalMenuPtr->_loadDroneId, globalMenuPtr->_loadLaunchUnitId);
+    launchSystem.load(globalMenuPtr->_loadLaunchUnitId - 1, globalMenuPtr->_loadDroneId);
     return (nullptr);
 }
 
@@ -191,6 +191,6 @@ MD_Menu::value_t *Menu::cbUnloadConfirm(MD_Menu::mnuId_t id, bool bGet) {
     }
     Menu *globalMenuPtr = &menu;
     LOG_INFO("Menu triggered unload, LaunchUnitID: %d", globalMenuPtr->_unloadLaunchUnitId);
-    launchSystem.unload(globalMenuPtr->_unloadLaunchUnitId);
+    launchSystem.unload(globalMenuPtr->_unloadLaunchUnitId - 1);
     return (nullptr);
 }
