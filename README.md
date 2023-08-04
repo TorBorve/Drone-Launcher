@@ -86,7 +86,7 @@ A platform for launching drones remotely.
 
     ```bash
     # Build catkin pkg
-    catkin build drone_launcher_msgs_pkg
+    catkin build
     source devel/setup.bash
     ```
 
@@ -102,13 +102,15 @@ A platform for launching drones remotely.
 
     You can verify that the service is running using ```systemctl status drone_launcher.service```.
 
+    Furthermore, we should set up propper logging
+
 
 ## Run
 
 ### Your computer
 
 1. **Build ROS pkg**
-    We need to build our custom messages. This is done using ```catkin build``` (catkin_make should also work). After that we need to make header files for the messages that the Teensy will have acceess to. ```rosrun rosserial_client make_libraries <GIT_REPO_DIR>/embedded_sw/lib drone_launcher_msgs_pkg```
+    We need to build our custom messages. This is done using ```catkin build``` (catkin_make should also work). After that we need to make header files for the messages that the Teensy will have acceess to. ```rosrun rosserial_client make_libraries <GIT_REPO_DIR>/embedded_sw/lib drone_launcher_pkg```
 
 3. **Flash code to Teensy**
     Open a vscode window in the *embedded_ws/* folder. If platformio is installed correctly you should then see some new optinon in the bottom menu bar. After connecting the Teensy to you computer you can press the upload arrow to compile and flash code to the Teensy. See picture.
