@@ -1,6 +1,39 @@
 #pragma once
+#include "IMU.h"
+#include "GPS.h"
+
 #include <stdint.h>
-#include <TinyGPSPlus.h>
+#include <Adafruit_BNO08x.h>
+// Define data structures for each sensor type
+typedef struct euler_t {
+  float yaw;
+  float pitch;
+  float roll;
+} euler_t;
+
+typedef struct quaternion_t {
+    float qr;
+    float qi;
+    float qj;
+    float qk;
+} quaternion_t;
+
+class IMU {
+    private:
+        uint32_t _prevUpdate;
+        sh2_RotationVectorWAcc_t* _quaternion;
+        void enableAll();
+        void quaternionToEuler(float qr, float qi, float qj, float qk, euler_t* ypr, bool degrees = false);
+        void quaternionToEulerRV(sh2_RotationVectorWAcc_t* rotational_vector, euler_t* ypr, bool degrees = false);
+    public:
+        void update(uint32_t now);
+        void init();
+        euler_t getEuler(bool degrees);
+        quaternion_t getQuat();
+        bool status(uint32_t now);
+        IMU();
+
+};
 
 typedef struct PositionArray {
     double lat;
@@ -49,4 +82,20 @@ class GPS {
         GPS();
 };
 
-// extern GPS gps;
+class GuidanceSystem {
+    private:
+        GPS _gps;
+        IMU _imu;
+    
+    public:
+        void update(uint32_t now);
+        void init();
+        bool status(uint32_t now);
+        PositionArray getPos() {return _gps.getPos();}
+        euler_t getOrientation(bool degrees) {return _imu.getEuler(degrees);}
+        quaternion_t getOrientationQuat() {return _imu.getQuat();}
+        TinyGPSTime getTime() {return _gps.getTime();}
+        TinyGPSDate getDate() {return _gps.getDate();}
+};
+
+extern GuidanceSystem guidanceSystem;
