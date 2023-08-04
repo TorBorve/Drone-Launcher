@@ -1,0 +1,11 @@
+int8 STATE_FIRED = 0
+int8 STATE_LOADING = 1
+int8 STATE_LOADED = 2
+int8 STATE_FIRING = 3
+int8 STATE_UNLOADING = 4
+int8 STATE_ERROR = 5
+
+int8 state
+
+int8 LOADEDDRONEID_EMPTY = -1
+int8 loadedDroneId
