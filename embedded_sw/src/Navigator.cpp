@@ -3,19 +3,19 @@
 #define BNO08X_RESET -1
 #define UPDATE_INTERVAL 1000
 
-// IMU imu; 
+// IMU imu;
 Adafruit_BNO08x bno08x(BNO08X_RESET);
 sh2_SensorValue_t sensorValue;
 euler_t ypr;
 
 IMU::IMU() : _prevUpdate(0) {
-    }
+}
 
 void IMU::init() {
     if (!bno08x.begin_I2C()) {
         // if (!bno08x.begin_UART(&Serial1)) {  // Requires a device with > 300 byte
         // UART buffer! if (!bno08x.begin_SPI(BNO08X_CS, BNO08X_INT)) {
-        Serial.println("Failed to find BNO08x chip");       
+        Serial.println("Failed to find BNO08x chip");
     }
     enableAll();
 }
@@ -70,7 +70,7 @@ void IMU::update(uint32_t now) {
         return;
     }
     _prevUpdate = now;
-    
+
     if (bno08x.wasReset()) {
         Serial.print("IMU sensor was reset");
         enableAll();
@@ -82,7 +82,6 @@ void IMU::update(uint32_t now) {
 }
 
 void IMU::quaternionToEuler(float qr, float qi, float qj, float qk, euler_t* ypr, bool degrees = false) {
-
     float sqr = sq(qr);
     float sqi = sq(qi);
     float sqj = sq(qj);
@@ -93,9 +92,9 @@ void IMU::quaternionToEuler(float qr, float qi, float qj, float qk, euler_t* ypr
     ypr->roll = atan2(2.0 * (qj * qk + qi * qr), (-sqi - sqj + sqk + sqr));
 
     if (degrees) {
-      ypr->yaw *= RAD_TO_DEG;
-      ypr->pitch *= RAD_TO_DEG;
-      ypr->roll *= RAD_TO_DEG;
+        ypr->yaw *= RAD_TO_DEG;
+        ypr->pitch *= RAD_TO_DEG;
+        ypr->roll *= RAD_TO_DEG;
     }
 }
 
@@ -108,11 +107,10 @@ euler_t IMU::getEuler(bool degrees) {
     return ypr;
 }
 
-
-quaternion_t IMU::getQuat() {return quaternion_t{sensorValue.un.arvrStabilizedRV.real,
-                                                    sensorValue.un.arvrStabilizedRV.i,
-                                                    sensorValue.un.arvrStabilizedRV.j,
-                                                    sensorValue.un.arvrStabilizedRV.k};}
+quaternion_t IMU::getQuat() { return quaternion_t{sensorValue.un.arvrStabilizedRV.real,
+                                                  sensorValue.un.arvrStabilizedRV.i,
+                                                  sensorValue.un.arvrStabilizedRV.j,
+                                                  sensorValue.un.arvrStabilizedRV.k}; }
 
 bool IMU::status(uint32_t now) {
     // todo fix this
@@ -127,10 +125,8 @@ bool IMU::status(uint32_t now) {
 
 GPS gps;
 
-GPS::GPS() : _prevUpdate(0), _lat(0), _long(0), _last_loc_update(0),
-            _alt(0), _last_alt_update(0), tiny_gps(), _date(), _last_date_update(0), _time(), _last_time_update(0),
-            _speed(), _last_speed_update(0) {
-    }
+GPS::GPS() : _prevUpdate(0), _lat(0), _long(0), _last_loc_update(0), _alt(0), _last_alt_update(0), tiny_gps(), _date(), _last_date_update(0), _time(), _last_time_update(0), _speed(), _last_speed_update(0) {
+}
 
 void GPS::init() {
     GPS_SERIAL.begin(GPSBaud);
