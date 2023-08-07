@@ -23,6 +23,7 @@ class LaunchSystem {
     void fire(uint8_t launchUnitId);
     void load(uint8_t launchUnitId, DroneId droneId);
     void unload(uint8_t launchUnitId);
+    void manualControl(uint8_t launchUnitId, bool safetyOn, bool triggerOn);
     bool isArmed() const { return _isArmed; }
     LaunchUnit::State getLaunchUnitState(uint8_t launchUnitId) const;
     DroneId getLoadedDroneId(uint8_t launchUnitId) const;

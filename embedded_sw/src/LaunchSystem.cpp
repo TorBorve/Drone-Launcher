@@ -37,7 +37,7 @@ void LaunchSystem::init() {
         _launchUnits[i].init();
     }
     _armSwitch.init();
-    FastLED.addLeds<WS2812, PIN_DRONE_LEDS, GRB>(_statusLeds, LS_NUM_UNITS);
+    FastLED.addLeds<WS2812, PIN_DRONE_LEDS, GRB>(_statusLeds, LS_NUM_UNITS).setCorrection(TypicalLEDStrip);
     FastLED.show();
     _init = true;
 }
@@ -88,6 +88,14 @@ void LaunchSystem::unload(uint8_t launchUnitId) {
         _loadedDroneIds[launchUnitId] = 0;
     } else {
         LOG_WARN("Attempted to unload launch unit %d while launch system is armed OR launch unit ID out of range", launchUnitId);
+    }
+}
+
+void LaunchSystem::manualControl(uint8_t launchUnitId, bool safetyOn, bool triggerOn) {
+    if (launchUnitId >= 0 && launchUnitId < LS_NUM_UNITS) {
+        _launchUnits[launchUnitId].manualControl(safetyOn, triggerOn);
+    } else {
+        LOG_WARN("Attempted to manually control launch unit %d, however launch unit ID out of range", launchUnitId);
     }
 }
 

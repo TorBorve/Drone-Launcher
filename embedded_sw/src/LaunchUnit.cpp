@@ -70,6 +70,29 @@ void LaunchUnit::unload() {
     }
 }
 
+void LaunchUnit::manualControl(bool safetyOn, bool triggerOn) {
+    Threads::Scope lock(_mutex);
+    _state = State::MANUAL;
+    if (safetyOn) {
+        _safetyServo.write(SAFETY_SERVO_ON_ANGLE);
+    } else {
+        _safetyServo.write(SAFETY_SERVO_OFF_ANGLE);
+    }
+    if (triggerOn) {
+        if (_mirrored) {
+            _triggerServo.write(TRIGGER_SERVO_LOADED_ANGLE_MIRROR);
+        } else {
+            _triggerServo.write(TRIGGER_SERVO_LOADED_ANGLE);
+        }
+    } else {
+        if (_mirrored) {
+            _triggerServo.write(TRIGGER_SERVO_RELEASED_ANGLE_MIRROR);
+        } else {
+            _triggerServo.write(TRIGGER_SERVO_RELEASED_ANGLE);
+        }
+    }
+}
+
 LaunchUnit::State LaunchUnit::getState() const {
     Threads::Scope lock(_mutex);
     return _state;
@@ -104,6 +127,10 @@ void LaunchUnit::updateLed() {
             break;
         case State::UNLOADING:
             _statusLed.setColor(CRGB::Blue);
+            _statusLed.setMode(RGBLed::Mode::BLINK);
+            break;
+        case State::MANUAL:
+            _statusLed.setColor(CRGB::Purple);
             _statusLed.setMode(RGBLed::Mode::BLINK);
             break;
         case State::ERROR:

@@ -20,6 +20,7 @@ Communicator::Communicator() : nh{},
                                _fireSub{"drone_launcher/fire", &fireCallback},
                                _loadSub{"drone_launcher/load", &loadCallback},
                                _unloadSub{"drone_launcher/unload", &unloadCallback},
+                               _manualControlSub{"drone_launcher/manual_control", &manualControlCallback},
                                _init{false},
                                _aliveLed{PIN_LED_ALIVE, BaseLed::Mode::BLINK},
                                _prevUpdate{0},
@@ -102,6 +103,11 @@ void Communicator::loadCallback(const std_msgs::UInt8& msg) {
 void Communicator::unloadCallback(const std_msgs::UInt8& msg) {
     LOG_INFO("Received unload message");
     launchSystem.unload(msg.data - 1);
+}
+
+void Communicator::manualControlCallback(const drone_launcher_pkg::ManualControl& msg) {
+    LOG_INFO("Received manual control message");
+    launchSystem.manualControl(msg.launchUnitId, msg.safetyServoOn, msg.triggerServoOn);
 }
 
 int8_t Communicator::toMsg(LaunchUnit::State state) {
