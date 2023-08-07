@@ -34,6 +34,7 @@ class LaunchSystem {
     Switch _armSwitch;
     bool _isArmed;
     uint32_t _prevUpdate;
+    bool _init;
 };
 
 extern LaunchSystem launchSystem;

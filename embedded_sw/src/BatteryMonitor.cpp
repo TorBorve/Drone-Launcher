@@ -1,6 +1,7 @@
 #include "BatteryMonitor.h"
 
 #include "Pins.h"
+#include "Log.h"
 
 namespace DroneLauncher {
 
@@ -14,7 +15,7 @@ namespace DroneLauncher {
 
 BatteryMonitor batteryMonitor;
 
-BatteryMonitor::BatteryMonitor() : _batMeasPin{PIN_BAT_MEAS}, _voltage{0}, _prevUpdate{0} {
+BatteryMonitor::BatteryMonitor() : _batMeasPin{PIN_BAT_MEAS}, _voltage{0}, _prevUpdate{0}, _init{false} {
     for (int i = 0; i < BM_NUM_LED; i++) {
         _ledArray[i] = CRGB::Black;
     }
@@ -27,9 +28,14 @@ void BatteryMonitor::init() {
 
     pinModeExt(_batMeasPin, INPUT);
     _voltage = readBat();
+    _init = true;
 }
 
 void BatteryMonitor::update(uint32_t now) {
+    if (!_init) {
+        LOG_ERROR("BatteryMonitor::update() called before BatteryMonitor::init()");
+        return;
+    }
     if (now - _prevUpdate < UPDATE_INTERVAL) {
         return;
     }

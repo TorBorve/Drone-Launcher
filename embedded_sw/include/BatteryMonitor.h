@@ -22,6 +22,7 @@ class BatteryMonitor {
     float _voltage;
     CRGB _ledArray[BM_NUM_LED];
     uint32_t _prevUpdate;
+    bool _init;
 };
 
 extern BatteryMonitor batteryMonitor;

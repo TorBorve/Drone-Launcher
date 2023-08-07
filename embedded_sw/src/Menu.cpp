@@ -56,7 +56,8 @@ Menu::Menu(uint8_t backBtnPin,
                                  _enterBtn{enterBtnPin},
                                  _upBtn{upBtnPin},
                                  _downBtn{downBtnPin},
-                                 _prevUpdate{0} {}
+                                 _prevUpdate{0},
+                                 _init{false} {}
 
 void Menu::init() {
     _backBtn.init();
@@ -74,9 +75,14 @@ void Menu::init() {
     _menu.setTimeout(0);
     _menu.setAutoStart(true);
     _menu.runMenu(true);
+    _init = true;
 }
 
 void Menu::update(uint32_t now) {
+    if (!_init) {
+        LOG_ERROR("Menu not initialized");
+        return;
+    }
     _backBtn.poll(now);
     _upBtn.poll(now);
     _downBtn.poll(now);

@@ -26,7 +26,8 @@ LaunchSystem::LaunchSystem() : _launchUnits{
                                },
                                _armSwitch{PIN_ARM_SWITCH},
                                _isArmed{false},
-                               _prevUpdate{0} {
+                               _prevUpdate{0},
+                               _init{false} {
 }
 
 void LaunchSystem::init() {
@@ -38,9 +39,14 @@ void LaunchSystem::init() {
     _armSwitch.init();
     FastLED.addLeds<WS2812, PIN_DRONE_LEDS, GRB>(_statusLeds, LS_NUM_UNITS);
     FastLED.show();
+    _init = true;
 }
 
 void LaunchSystem::update(uint32_t now) {
+    if (!_init) {
+        LOG_ERROR("LaunchSystem::update() called before LaunchSystem::init()");
+        return;
+    }
     _armSwitch.poll(now);
     for (uint8_t i = 0; i < LS_NUM_UNITS; i++) {
         _launchUnits[i].update(now);

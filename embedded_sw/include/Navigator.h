@@ -71,6 +71,7 @@ class Navigator {
    private:
     GPS _gps;
     IMU _imu;
+    bool _init;
 };
 
 extern Navigator navigator;

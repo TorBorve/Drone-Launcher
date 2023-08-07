@@ -109,14 +109,19 @@ bool GPS::getGPSFix() {
     return _tinyGPS.location.age() > GPS_MAX_TIMEOUT ? false : true;
 }
 
-Navigator::Navigator() : _gps{}, _imu{} {}
+Navigator::Navigator() : _gps{}, _imu{}, _init{false} {}
 
 void Navigator::init() {
     _imu.init();
     _gps.init();
+    _init = true;
 }
 
 void Navigator::update(uint32_t now) {
+    if (!_init) {
+        LOG_ERROR("Navigator not initialized");
+        return;
+    }
     _imu.update(now);
     _gps.update(now);
 }

@@ -37,6 +37,7 @@ class Menu {
     Button _upBtn;
     Button _downBtn;
     uint32_t _prevUpdate;
+    bool _init;
 };
 
 extern Menu menu;

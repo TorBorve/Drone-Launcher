@@ -44,7 +44,11 @@ void Communicator::init() {
 }
 
 void Communicator::update(uint32_t now) {
-    if (!_init || now - _prevUpdate < COM_UPDATE_INTERVAL) {
+    if (!_init) {
+        LOG_ERROR("Communicator not initialized");
+        return;
+    }
+    if (now - _prevUpdate < COM_UPDATE_INTERVAL) {
         return;
     }
     _prevUpdate = now;
