@@ -16,6 +16,7 @@ add_message_files(
   FILES
   LauncherStatus.msg
   LaunchUnitStatus.msg
+  ManualControl.msg
 )
 
 generate_messages(
