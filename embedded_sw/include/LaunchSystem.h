@@ -13,7 +13,6 @@ const uint8_t _launchUnitPins[][5] = {
 
 #define LS_NUM_UNITS (sizeof(_launchUnitPins) / sizeof(_launchUnitPins[0]))
 
-
 // Class for sending and reciving commands from all the launch units
 class LaunchSystem {
    public:
@@ -24,7 +23,7 @@ class LaunchSystem {
     void fire(uint8_t launchUnitId);
     void load(uint8_t launchUnitId, DroneId droneId);
     void unload(uint8_t launchUnitId);
-    bool isArmed() const { return _isArmed;}
+    bool isArmed() const { return _isArmed; }
     LaunchUnit::State getLaunchUnitState(uint8_t launchUnitId) const;
     DroneId getLoadedDroneId(uint8_t launchUnitId) const;
 

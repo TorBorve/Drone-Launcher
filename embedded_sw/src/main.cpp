@@ -1,13 +1,12 @@
 #include <Arduino.h>
 
-#include "LaunchSystem.h"
 #include "BatteryMonitor.h"
 #include "Communicator.h"
-#include "Navigator.h"
+#include "LaunchSystem.h"
 #include "Log.h"
 #include "Menu.h"
+#include "Navigator.h"
 #include "Pins.h"
-
 
 void setup() {
     DroneLauncher::pins::setup();

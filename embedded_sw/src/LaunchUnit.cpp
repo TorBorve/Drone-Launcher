@@ -62,7 +62,7 @@ void LaunchUnit::load() {
         threads.addThread(LaunchUnit::loadThread, this);
     } else {
         LOG_WARN("Load acceptance test failed")
-        LOG_WARN("State: %d, armed: %d, rearsw: %d", _state, _isArmed, _rearSwitch.getState());
+        LOG_WARN("State: %d, armed: %d, rearsw: %d", (uint8_t)_state, _isArmed, _rearSwitch.getState());
     }
 }
 
@@ -211,4 +211,4 @@ void LaunchUnit::unloadThread(void* arg) {
     LOG_INFO("Unload thread completed");
 }
 
-} // namespace dronelauncher
+}  // namespace DroneLauncher

@@ -1,7 +1,7 @@
 #include "Menu.h"
 
-#include "Log.h"
 #include "LaunchSystem.h"
+#include "Log.h"
 
 namespace DroneLauncher {
 
@@ -165,7 +165,7 @@ MD_Menu::value_t *Menu::cbLoadLaunchUnitId(MD_Menu::mnuId_t id, bool bGet) {
 }
 
 MD_Menu::value_t *Menu::cbLoadConfirm(MD_Menu::mnuId_t id, bool bGet) {
-    if (!bGet) { // function called twice. Once with bGet = true, once with bGet = false
+    if (!bGet) {  // function called twice. Once with bGet = true, once with bGet = false
         return (nullptr);
     }
     Menu *globalMenuPtr = &menu;
@@ -185,7 +185,7 @@ MD_Menu::value_t *Menu::cbUnloadLaunchUnitId(MD_Menu::mnuId_t id, bool bGet) {
 }
 
 MD_Menu::value_t *Menu::cbUnloadConfirm(MD_Menu::mnuId_t id, bool bGet) {
-    if (!bGet) { // function called twice. Once with bGet = true, once with bGet = false
+    if (!bGet) {  // function called twice. Once with bGet = true, once with bGet = false
         return (nullptr);
     }
     Menu *globalMenuPtr = &menu;
@@ -194,4 +194,4 @@ MD_Menu::value_t *Menu::cbUnloadConfirm(MD_Menu::mnuId_t id, bool bGet) {
     return (nullptr);
 }
 
-} // namespace DroneLauncher
+}  // namespace DroneLauncher

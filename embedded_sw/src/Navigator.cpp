@@ -105,10 +105,11 @@ PositionArray GPS::getPos() {
     return pos;
 }
 
-bool GPS::getGPSFix() { 
-   return _tinyGPS.location.age() > GPS_MAX_TIMEOUT ? false : true; }
+bool GPS::getGPSFix() {
+    return _tinyGPS.location.age() > GPS_MAX_TIMEOUT ? false : true;
+}
 
-Navigator::Navigator() :  _gps{}, _imu{} {}
+Navigator::Navigator() : _gps{}, _imu{} {}
 
 void Navigator::init() {
     _imu.init();

@@ -5,7 +5,6 @@
 #include "Log.h"
 #include "Navigator.h"
 #include "Pins.h"
-
 #include "sensor_msgs/NavSatFix.h"
 #include "sensor_msgs/NavSatStatus.h"
 

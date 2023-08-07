@@ -4,4 +4,4 @@ namespace DroneLauncher {
 
 char _logBuffer[512];
 
-} // namespace DroneLauncher
+}  // namespace DroneLauncher

@@ -23,7 +23,7 @@ LaunchSystem::LaunchSystem() : _launchUnits{
                                               _launchUnitPins[1][3],
                                               _statusLeds[1],
                                               true},
-                                },
+                               },
                                _armSwitch{PIN_ARM_SWITCH},
                                _isArmed{false},
                                _prevUpdate{0} {
@@ -101,4 +101,4 @@ LaunchSystem::DroneId LaunchSystem::getLoadedDroneId(uint8_t launchUnitId) const
     }
 }
 
-} // namespace DroneLauncher
+}  // namespace DroneLauncher

@@ -7,11 +7,10 @@ namespace DroneLauncher {
 #define BAT_SCALE 7.835306
 #define MIN_BAT_VOLTAGE (3.6 * 6)
 #define MAX_BAT_VOLTAGE (4.2 * 6)
-#define BRIGHTNESS  64
-#define LED_TYPE    WS2812
+#define BRIGHTNESS 64
+#define LED_TYPE WS2812
 #define COLOR_ORDER GRB
 #define UPDATE_INTERVAL 1000
-
 
 BatteryMonitor batteryMonitor;
 
@@ -47,7 +46,7 @@ void BatteryMonitor::update(uint32_t now) {
             _ledArray[i] = CRGB::Red;
         }
     }
-    
+
     // Update LEDS
     FastLED.show();
 }
@@ -57,7 +56,7 @@ float BatteryMonitor::readBat() {
 }
 
 float BatteryMonitor::voltageToPercent(float voltage) {
-    return min(1, max(0,(voltage - MIN_BAT_VOLTAGE) / (MAX_BAT_VOLTAGE - MIN_BAT_VOLTAGE)));
+    return min(1, max(0, (voltage - MIN_BAT_VOLTAGE) / (MAX_BAT_VOLTAGE - MIN_BAT_VOLTAGE)));
 }
 
 }  // namespace DroneLauncher

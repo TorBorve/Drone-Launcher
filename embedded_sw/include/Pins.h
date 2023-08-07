@@ -22,10 +22,9 @@ void setup();
 
 #define pinModeExt(pin, mode) (pin >= PINS_MCP_OFFSET) ? pins::mcp.pinMode(pin - PINS_MCP_OFFSET, mode) : pinMode(pin, mode)
 
-#define digitalWriteExt(pin, value)  (pin >= PINS_MCP_OFFSET) ? pins::mcp.digitalWrite(pin - PINS_MCP_OFFSET, value) : digitalWrite(pin, value)
+#define digitalWriteExt(pin, value) (pin >= PINS_MCP_OFFSET) ? pins::mcp.digitalWrite(pin - PINS_MCP_OFFSET, value) : digitalWrite(pin, value)
 
 #define digitalReadExt(pin) (pin >= PINS_MCP_OFFSET ? pins::mcp.digitalRead(pin - PINS_MCP_OFFSET) : digitalRead(pin))
-
 
 ///////////////////////////
 // Pin Mapping

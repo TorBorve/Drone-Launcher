@@ -51,7 +51,7 @@ class RGBLed : public BaseLed {
    protected:
     virtual void writeToLed() override;
     CRGB& _actualColor;  // reference to the actual color
-    CRGB _color;          // the color we want to set.
+    CRGB _color;         // the color we want to set.
 };
 
 }  // namespace DroneLauncher

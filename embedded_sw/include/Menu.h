@@ -20,7 +20,7 @@ class Menu {
     static MD_Menu::value_t *cbLoadLaunchUnitId(MD_Menu::mnuId_t id, bool bGet);
     static MD_Menu::value_t *cbLoadConfirm(MD_Menu::mnuId_t id, bool bGet);
     static MD_Menu::value_t *cbUnloadLaunchUnitId(MD_Menu::mnuId_t id, bool bGet);
-     static MD_Menu::value_t *cbUnloadConfirm(MD_Menu::mnuId_t id, bool bGet);
+    static MD_Menu::value_t *cbUnloadConfirm(MD_Menu::mnuId_t id, bool bGet);
 
     static const MD_Menu::mnuHeader_t mnuHdr[];
     static const MD_Menu::mnuItem_t mnuItm[];

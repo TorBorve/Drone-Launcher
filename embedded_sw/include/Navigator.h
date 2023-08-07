@@ -51,10 +51,10 @@ class GPS {
     void update(uint32_t now);
     PositionArray getPos();
     bool getGPSFix();
+
    private:
     TinyGPSPlus _tinyGPS;
     uint32_t _prevUpdate;
-
 };
 
 // Class for giving data about GPS and IMU to communicator
@@ -67,10 +67,10 @@ class Navigator {
     bool getGPSFix();
     euler_t getOrientationEul(bool degrees);
     quaternion_t getOrientationQuat();
+
    private:
     GPS _gps;
     IMU _imu;
-
 };
 
 extern Navigator navigator;
