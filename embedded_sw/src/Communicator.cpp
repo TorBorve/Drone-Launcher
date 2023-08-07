@@ -3,7 +3,11 @@
 #include "BatteryMonitor.h"
 #include "LaunchSystem.h"
 #include "Log.h"
+#include "Navigator.h"
 #include "Pins.h"
+
+#include "sensor_msgs/NavSatFix.h"
+#include "sensor_msgs/NavSatStatus.h"
 
 #define COM_UPDATE_INTERVAL 100
 #define COM_STATUS_UPDATE_INTERVAL 1000
@@ -58,8 +62,22 @@ void Communicator::updateStatus(uint32_t now) {
     _statusMsg.header.frame_id = "drone_launcher1";
     _statusMsg.armed = launchSystem.isArmed();
     _statusMsg.batteryVoltage = batteryMonitor.getVoltage();
-    // _statusMsg.gps TODO
-    // _statusMsg.orientation TODO
+
+    // GPS
+    _statusMsg.gps.header = _statusMsg.header;
+    _statusMsg.gps.status.status = (navigator.getGPSFix()) ? 0 : -1;
+    PositionArray post = navigator.getPos();
+    _statusMsg.gps.latitude = post.lat;
+    _statusMsg.gps.longitude = post.lng;
+    _statusMsg.gps.altitude = post.alt;
+
+    // Orientation
+    quaternion_t quat = navigator.getOrientationQuat();
+    _statusMsg.orientation.x = quat.qi;
+    _statusMsg.orientation.y = quat.qj;
+    _statusMsg.orientation.z = quat.qk;
+    _statusMsg.orientation.w = quat.qr;
+
     for (uint8_t i = 0; i < LS_NUM_UNITS; i++) {
         _luStatusMsgs[i].state = toMsg(launchSystem.getLaunchUnitState(i));  // TODO: use function instead of cast
         _luStatusMsgs[i].loadedDroneId = launchSystem.getLoadedDroneId(i);
