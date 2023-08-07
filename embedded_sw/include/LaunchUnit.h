@@ -16,6 +16,7 @@ class LaunchUnit {
                                  LOADED,
                                  FIRING,
                                  UNLOADING,
+                                 MANUAL,
                                  ERROR };
     LaunchUnit(uint8_t triggerServoPin, uint8_t safetyServoPin, uint8_t rearSwitchPin, uint8_t safetySwitchPin, CRGB& statusLed, bool mirrored);
     void init();
@@ -23,6 +24,7 @@ class LaunchUnit {
     void fire();
     void load();
     void unload();
+    void manualControl(bool safetyOn, bool triggerOn);
     State getState() const;
     void setArmed(bool isArmed);
 
