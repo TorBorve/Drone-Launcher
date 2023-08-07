@@ -49,7 +49,6 @@ class GPS {
     bool getGPSFix();
    private:
     TinyGPSPlus _tinyGPS;
-    bool _gpsFix;
     uint32_t _prevUpdate;
 
 };

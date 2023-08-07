@@ -7,7 +7,7 @@
 
 #define GPS_UPDATE_INTERVAL 500
 #define GPS_BAUD 38400
-#define GPS_SERIAL Serial4
+#define GPS_SERIAL Serial5
 #define GPS_MAX_TIMEOUT 10000
 
 Navigator navigator{};
@@ -77,7 +77,7 @@ quaternion_t IMU::getQuat() { return quaternion_t{_sensorValue.un.arvrStabilized
                                                   _sensorValue.un.arvrStabilizedRV.j,
                                                   _sensorValue.un.arvrStabilizedRV.k}; }
 
-GPS::GPS() : _gpsFix{false}, _prevUpdate{0} {}
+GPS::GPS() : _prevUpdate{0} {}
 
 void GPS::init() {
     GPS_SERIAL.begin(GPS_BAUD);
@@ -85,7 +85,7 @@ void GPS::init() {
 
 void GPS::update(uint32_t now) {
     for (int i = 0; i < 64 && GPS_SERIAL.available(); i++) {
-        _gpsFix = _tinyGPS.encode(GPS_SERIAL.read());
+        _tinyGPS.encode(GPS_SERIAL.read());
     }
     if (now - _prevUpdate < GPS_UPDATE_INTERVAL) {
         return;
@@ -103,7 +103,8 @@ PositionArray GPS::getPos() {
     return pos;
 }
 
-bool GPS::getGPSFix() { return _gpsFix; }
+bool GPS::getGPSFix() { 
+   return _tinyGPS.location.age() > GPS_MAX_TIMEOUT ? false : true; }
 
 Navigator::Navigator() :  _gps{}, _imu{} {}
 

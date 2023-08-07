@@ -65,7 +65,7 @@ void Communicator::updateStatus(uint32_t now) {
 
     // GPS
     _statusMsg.gps.header = _statusMsg.header;
-    // _statusMsg.gps.status = ((navigator.getGPSFix()) ? sensor_msgs::NavSatStatus::STATUS_FIX : sensor_msgs::NavSatStatus::STATUS_NO_FIX);
+    _statusMsg.gps.status.status = (navigator.getGPSFix()) ? 0 : -1;
     PositionArray post = navigator.getPos();
     _statusMsg.gps.latitude = post.lat;
     _statusMsg.gps.longitude = post.lng;
