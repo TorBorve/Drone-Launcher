@@ -15,13 +15,10 @@ namespace DroneLauncher {
 
 Menu menu{PIN_MENU_BACK, PIN_MENU_ENTER, PIN_MENU_UP, PIN_MENU_DOWN};
 
-// Adafruit_LiquidCrystal lcd{0};
-
 const MD_Menu::mnuHeader_t Menu::mnuHdr[] = {
     {10, "Main Menu", 11, 12, 0},
     {11, "Load Drone", 20, 22, 0},
     {12, "Unload Drone", 30, 31, 0},
-    // {11, "Input Data", 20, 21, 0},
 };
 
 const MD_Menu::mnuItem_t Menu::mnuItm[] = {

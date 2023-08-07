@@ -19,6 +19,7 @@ typedef struct quaternion_t {
     float qk;
 } quaternion_t;
 
+// Class for reading data from BNO085 IMU
 class IMU {
    public:
     IMU();
@@ -29,8 +30,8 @@ class IMU {
 
    private:
     void enableReports();
-    void quaternionToEuler(float qr, float qi, float qj, float qk, euler_t* ypr, bool degrees = false);
-    void quaternionToEulerRV(sh2_RotationVectorWAcc_t* rotational_vector, euler_t* ypr, bool degrees = false);
+    void quaternionToEuler(float qr, float qi, float qj, float qk, euler_t* ypr, bool degrees);
+    void quaternionToEulerRV(sh2_RotationVectorWAcc_t* rotational_vector, euler_t* ypr, bool degrees);
     Adafruit_BNO08x _imuSensor;
     sh2_SensorValue_t _sensorValue;
     uint32_t _prevUpdate;
@@ -42,6 +43,7 @@ typedef struct PositionArray {
     double alt;  // meters
 } PositionArray;
 
+// Class for reading data from GPS
 class GPS {
    public:
     GPS();
@@ -55,6 +57,7 @@ class GPS {
 
 };
 
+// Class for giving data about GPS and IMU to communicator
 class Navigator {
    public:
     Navigator();

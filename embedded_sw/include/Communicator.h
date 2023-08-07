@@ -11,6 +11,7 @@
 
 namespace DroneLauncher {
 
+// Class for communicating with ROS
 class Communicator {
    public:
     Communicator();
@@ -24,7 +25,7 @@ class Communicator {
     static void loadCallback(const std_msgs::UInt8& msg);
     static void unloadCallback(const std_msgs::UInt8& msg);
     static int8_t toMsg(LaunchUnit::State state);
-    void updateStatus(uint32_t now);
+    void updateStatus();
 
     ros::Publisher _statusPub;
     ros::Subscriber<std_msgs::UInt8> _fireSub;

@@ -52,14 +52,14 @@ void Communicator::update(uint32_t now) {
 
     if (now - _prevStatusUpdate > COM_STATUS_UPDATE_INTERVAL) {
         _prevStatusUpdate = now;
-        updateStatus(now);
+        updateStatus();
         _statusPub.publish(&_statusMsg);
     }
     nh.spinOnce();  // Not thread safe since nh is used in logging.
     _aliveLed.update(now);
 }
 
-void Communicator::updateStatus(uint32_t now) {
+void Communicator::updateStatus() {
     _statusMsg.header.stamp = nh.now();
     _statusMsg.header.frame_id = "drone_launcher1";
     _statusMsg.armed = launchSystem.isArmed();

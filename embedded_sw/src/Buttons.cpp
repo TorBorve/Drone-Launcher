@@ -38,14 +38,9 @@ void Switch::poll(uint32_t now) {
     }
 }
 
-bool Switch::calcBoolState(float state, bool boolState) {
-    float bias = -FILTER_BIAS * (2 * (int)boolState - 1);  // last part is to set correct sign of bias.
+bool Switch::calcBoolState(float state, bool currentBoolState) {
+    float bias = -FILTER_BIAS * (2 * (int)currentBoolState - 1);  // last part is to set correct sign of bias.
     return state > (0.5 + bias) ? true : false;
-}
-
-// reset the button
-void Switch::reset(void) {
-    *this = Switch{_pin};
 }
 
 }  // namespace DroneLauncher

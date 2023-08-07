@@ -9,10 +9,11 @@
 
 namespace DroneLauncher {
 
+// class for controlling a launch unit (one platform/chamber)
 class LaunchUnit {
 public:
     enum class State : uint8_t {FIRED, LOADING, LOADED, FIRING, UNLOADING, ERROR};
-    LaunchUnit(uint8_t triggerServoPin, uint8_t safetyServoPin, uint8_t rearSwitchPin, uint8_t safetySwitchPin, uint8_t frontSwitchPin, CRGB& statusLed, bool mirrored);
+    LaunchUnit(uint8_t triggerServoPin, uint8_t safetyServoPin, uint8_t rearSwitchPin, uint8_t safetySwitchPin, CRGB& statusLed, bool mirrored);
     void init();
     void update(uint32_t now);
     void fire();
@@ -32,10 +33,9 @@ private:
     const uint8_t _triggerServoPin;
     Switch _rearSwitch;
     Switch _safetySwitch;
-    Switch _frontSwitch;
     RGBLed _statusLed;
     bool _isArmed;
-    const bool _mirrored;
+    const bool _mirrored; // if the trigger servo is mirrored (i.e. the servo is mounted on the other side of the platform)
     mutable Threads::Mutex _mutex;
 };
 

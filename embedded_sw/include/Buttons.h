@@ -4,17 +4,8 @@
 
 namespace DroneLauncher {
 
-// Button classs, encapsulate the functionality of a button
+// Swtich classs, encapsulate the functionality of a button
 class Switch {
-   protected:
-    static bool calcBoolState(float state, bool boolState);
-
-    uint8_t _pin;  // hardware pin number
-    float _state;  // current pin state
-    bool _boolState; // state as pushed/not pushed
-    bool _hasChanged;  // button latch
-    uint32_t _prevUpdate; // time in ms of previous update
-
    public:
     Switch(uint8_t pin);
     void init();
@@ -22,7 +13,15 @@ class Switch {
     virtual bool hasEvent() const { return _hasChanged; }  // return the latch state
     void clearEvent() {_hasChanged = false;}
     bool getState() const { return _boolState; }
-    void reset(void);
+   protected:
+    static bool calcBoolState(float state, bool currentBoolState);
+
+    uint8_t _pin;  // hardware pin number
+    float _state;  // current pin state
+    bool _boolState; // state as pushed/not pushed
+    bool _hasChanged;  // button latch
+    uint32_t _prevUpdate; // time in ms of previous update
+
 };
 
 class Button : public Switch {

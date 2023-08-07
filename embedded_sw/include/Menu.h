@@ -6,7 +6,7 @@
 
 namespace DroneLauncher {
 
-
+// Class for handling the LCD menu and buttons attached to it
 class Menu {
    public:
     Menu(uint8_t backBtnPin, uint8_t enterBtnPin, uint8_t upBtnPin, uint8_t downBtnPin);

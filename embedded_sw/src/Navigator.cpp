@@ -47,7 +47,7 @@ void IMU::update(uint32_t now) {
     }
 }
 
-void IMU::quaternionToEuler(float qr, float qi, float qj, float qk, euler_t* ypr, bool degrees = false) {
+void IMU::quaternionToEuler(float qr, float qi, float qj, float qk, euler_t* ypr, bool degrees) {
     float sqr = sq(qr);
     float sqi = sq(qi);
     float sqj = sq(qj);
@@ -64,7 +64,7 @@ void IMU::quaternionToEuler(float qr, float qi, float qj, float qk, euler_t* ypr
     }
 }
 
-void IMU::quaternionToEulerRV(sh2_RotationVectorWAcc_t* rotational_vector, euler_t* ypr, bool degrees = false) {
+void IMU::quaternionToEulerRV(sh2_RotationVectorWAcc_t* rotational_vector, euler_t* ypr, bool degrees) {
     quaternionToEuler(rotational_vector->real, rotational_vector->i, rotational_vector->j, rotational_vector->k, ypr, degrees);
 }
 
