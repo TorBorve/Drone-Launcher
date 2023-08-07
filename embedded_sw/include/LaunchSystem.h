@@ -3,6 +3,8 @@
 #include "LaunchUnit.h"
 #include "Pins.h"
 
+namespace DroneLauncher {
+
 const uint8_t _launchUnitPins[][5] = {
     {PIN_F1R1_TRIGGER_SERVO, PIN_F1R1_SAFETY_SERVO, PIN_F1R1_REAR_SWITCH, PIN_F1R1_SAFETY_SWITCH, PIN_F1R1_FRONT_SWITCH},
     {PIN_F1R2_TRIGGER_SERVO, PIN_F1R2_SAFETY_SERVO, PIN_F1R2_REAR_SWITCH, PIN_F1R2_SAFETY_SWITCH, PIN_F1R2_FRONT_SWITCH},
@@ -40,3 +42,5 @@ class LaunchSystem {
 };
 
 extern LaunchSystem launchSystem;
+
+}  // namespace DroneLauncher

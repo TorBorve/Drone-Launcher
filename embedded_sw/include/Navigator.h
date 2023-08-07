@@ -3,6 +3,8 @@
 #include <TinyGPSPlus.h>
 #include <stdint.h>
 
+namespace DroneLauncher {
+
 // Define data structures for each sensor type
 typedef struct euler_t {
     float yaw;
@@ -69,3 +71,5 @@ class Navigator {
 };
 
 extern Navigator navigator;
+
+}  // namespace DroneLauncher

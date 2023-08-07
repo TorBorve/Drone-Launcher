@@ -9,6 +9,8 @@
 #include "sensor_msgs/NavSatFix.h"
 #include "sensor_msgs/NavSatStatus.h"
 
+namespace DroneLauncher {
+
 #define COM_UPDATE_INTERVAL 100
 #define COM_STATUS_UPDATE_INTERVAL 1000
 
@@ -118,3 +120,5 @@ int8_t Communicator::toMsg(LaunchUnit::State state) {
             return -1;
     }
 }
+
+}  // namespace DroneLauncher

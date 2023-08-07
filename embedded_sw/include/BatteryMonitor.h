@@ -4,6 +4,8 @@
 #include <FastLED.h>
 #define BM_NUM_LED 6
 
+namespace DroneLauncher {
+
 class BatteryMonitor {
     private:
         void readBat();
@@ -22,3 +24,5 @@ class BatteryMonitor {
 };
 
 extern BatteryMonitor batteryMonitor;
+
+}  // namespace DroneLauncher

@@ -10,20 +10,20 @@
 
 
 void setup() {
-    pins::setup();
-    launchSystem.init();
-    batteryMonitor.init();
-    communicator.init();
-    menu.init();
-    navigator.init();
+    DroneLauncher::pins::setup();
+    DroneLauncher::launchSystem.init();
+    DroneLauncher::batteryMonitor.init();
+    DroneLauncher::communicator.init();
+    DroneLauncher::menu.init();
+    DroneLauncher::navigator.init();
     LOG_INFO("Setup complete");
 }
 
 void loop() {
     uint32_t now = millis();
-    launchSystem.update(now);
-    batteryMonitor.update(now);
-    communicator.update(now);
-    menu.update(now);
-    navigator.update(now);
+    DroneLauncher::launchSystem.update(now);
+    DroneLauncher::batteryMonitor.update(now);
+    DroneLauncher::communicator.update(now);
+    DroneLauncher::menu.update(now);
+    DroneLauncher::navigator.update(now);
 }

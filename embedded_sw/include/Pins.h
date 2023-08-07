@@ -6,6 +6,8 @@
 // MCP23X17 Pin extensions
 ///////////////////////////
 
+namespace DroneLauncher {
+
 namespace pins {
 
 extern Adafruit_MCP23X17 mcp;
@@ -80,3 +82,5 @@ void setup();
 #define PIN_F1R1_REAR_SWITCH (13 + PINS_MCP_OFFSET)
 #define PIN_F1R1_SAFETY_SWITCH (14 + PINS_MCP_OFFSET)
 #define PIN_F1R1_FRONT_SWITCH (15 + PINS_MCP_OFFSET)
+
+}  // namespace DroneLauncher

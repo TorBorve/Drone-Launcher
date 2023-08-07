@@ -2,6 +2,8 @@
 
 #include "Log.h"
 
+namespace DroneLauncher {
+
 #define IMU_BNO08X_RESET -1
 #define IMU_UPDATE_INTERVAL 10
 
@@ -133,3 +135,5 @@ euler_t Navigator::getOrientationEul(bool degrees) {
 quaternion_t Navigator::getOrientationQuat() {
     return _imu.getQuat();
 }
+
+}  // namespace DroneLauncher

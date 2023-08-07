@@ -4,6 +4,8 @@
 
 #include "Pins.h"
 
+namespace DroneLauncher {
+
 #define ON_THRESHOLD 0.8       // Value of _state before we say the button is pushed
 #define FILTER_TRUST_NEW 0.15  // How much do we trust the new measurement
 #define FILTER_BIAS 0.3        // How much more/less than 0.5 must the state be before we change the bool state
@@ -45,3 +47,5 @@ bool Switch::calcBoolState(float state, bool boolState) {
 void Switch::reset(void) {
     *this = Switch{_pin};
 }
+
+}  // namespace DroneLauncher

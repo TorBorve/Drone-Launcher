@@ -4,6 +4,9 @@
 #include "Buttons.h"
 #include "MD_Menu.h"
 
+namespace DroneLauncher {
+
+
 class Menu {
    public:
     Menu(uint8_t backBtnPin, uint8_t enterBtnPin, uint8_t upBtnPin, uint8_t downBtnPin);
@@ -37,3 +40,5 @@ class Menu {
 };
 
 extern Menu menu;
+
+}  // namespace DroneLauncher

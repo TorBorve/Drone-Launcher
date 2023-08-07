@@ -2,6 +2,8 @@
 
 #include <stdint.h>
 
+namespace DroneLauncher {
+
 // Button classs, encapsulate the functionality of a button
 class Switch {
    protected:
@@ -28,3 +30,5 @@ class Button : public Switch {
   public:
     virtual bool hasEvent() const override { return _hasChanged && _boolState;} // only alert us new button is pushed
 };
+
+} // namespace DroneLauncher

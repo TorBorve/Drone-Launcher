@@ -9,6 +9,8 @@
 #include "Leds.h"
 #include "drone_launcher_pkg/LauncherStatus.h"
 
+namespace DroneLauncher {
+
 class Communicator {
    public:
     Communicator();
@@ -37,3 +39,5 @@ class Communicator {
 };
 
 extern Communicator communicator;
+
+}  // namespace DroneLauncher

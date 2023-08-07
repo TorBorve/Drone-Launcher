@@ -3,6 +3,8 @@
 #include <FastLED.h>
 #include <stdint.h>
 
+namespace DroneLauncher {
+
 ////////////////////////////////////////
 // BaseLed
 ////////////////////////////////////////
@@ -51,3 +53,5 @@ class RGBLed : public BaseLed {
     CRGB& _actualColor;  // reference to the actual color
     CRGB _color;          // the color we want to set.
 };
+
+}  // namespace DroneLauncher

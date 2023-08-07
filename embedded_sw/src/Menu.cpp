@@ -3,6 +3,8 @@
 #include "Log.h"
 #include "LaunchSystem.h"
 
+namespace DroneLauncher {
+
 #define MN_UPDATE_INTERVAL 30
 #define PIN_MENU_BACK 28
 #define PIN_MENU_UP 29
@@ -194,3 +196,5 @@ MD_Menu::value_t *Menu::cbUnloadConfirm(MD_Menu::mnuId_t id, bool bGet) {
     launchSystem.unload(globalMenuPtr->_unloadLaunchUnitId - 1);
     return (nullptr);
 }
+
+} // namespace DroneLauncher

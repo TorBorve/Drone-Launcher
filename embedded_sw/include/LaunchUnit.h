@@ -7,6 +7,8 @@
 #include "Buttons.h"
 #include "Leds.h"
 
+namespace DroneLauncher {
+
 class LaunchUnit {
 public:
     enum class State : uint8_t {FIRED, LOADING, LOADED, FIRING, UNLOADING, ERROR};
@@ -36,3 +38,5 @@ private:
     const bool _mirrored;
     mutable Threads::Mutex _mutex;
 };
+
+}  // namespace DroneLauncher

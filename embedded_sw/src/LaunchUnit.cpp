@@ -3,6 +3,8 @@
 #include "Log.h"
 // #include "Communicator.h"
 
+namespace DroneLauncher {
+
 #define TRIGGER_SERVO_LOADED_ANGLE 179
 #define TRIGGER_SERVO_RELEASED_ANGLE 90
 #define TRIGGER_SERVO_LOADED_ANGLE_MIRROR 0
@@ -216,3 +218,5 @@ void LaunchUnit::unloadThread(void* arg) {
     lu->_mutex.unlock();
     LOG_INFO("Unload thread completed");
 }
+
+} // namespace dronelauncher

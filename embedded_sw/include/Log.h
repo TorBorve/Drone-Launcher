@@ -4,24 +4,28 @@
 
 #include "Communicator.h"
 
+namespace DroneLauncher {
+
 extern char _logBuffer[512];
 
+} // namespace DroneLauncher
+
 #define LOG_DEBUG(...) { \
-    Threads::Scope lock(communicator.mutex); \
-    snprintf(_logBuffer, sizeof(_logBuffer)/sizeof(char), __VA_ARGS__); \
-    communicator.nh.logdebug(_logBuffer);}
+    Threads::Scope lock(DroneLauncher::communicator.mutex); \
+    snprintf(DroneLauncher::_logBuffer, sizeof(DroneLauncher::_logBuffer)/sizeof(char), __VA_ARGS__); \
+    DroneLauncher::communicator.nh.logdebug(DroneLauncher::_logBuffer);}
 
 #define LOG_INFO(...) { \
-    Threads::Scope lock(communicator.mutex); \
-    snprintf(_logBuffer, sizeof(_logBuffer)/sizeof(char), __VA_ARGS__); \
-    communicator.nh.loginfo(_logBuffer);}
+    Threads::Scope lock(DroneLauncher::communicator.mutex); \
+    snprintf(DroneLauncher::_logBuffer, sizeof(DroneLauncher::_logBuffer)/sizeof(char), __VA_ARGS__); \
+    DroneLauncher::communicator.nh.loginfo(DroneLauncher::_logBuffer);}
 
 #define LOG_WARN(...) { \
-    Threads::Scope lock(communicator.mutex); \
-    snprintf(_logBuffer, sizeof(_logBuffer)/sizeof(char), __VA_ARGS__); \
-    communicator.nh.logwarn(_logBuffer);}
+    Threads::Scope lock(DroneLauncher::communicator.mutex); \
+    snprintf(DroneLauncher::_logBuffer, sizeof(DroneLauncher::_logBuffer)/sizeof(char), __VA_ARGS__); \
+    DroneLauncher::communicator.nh.logwarn(DroneLauncher::_logBuffer);}
 
 #define LOG_ERROR(...) { \
-    Threads::Scope lock(communicator.mutex); \
-    snprintf(_logBuffer, sizeof(_logBuffer)/sizeof(char), __VA_ARGS__); \
-    communicator.nh.logerror(_logBuffer);}
+    Threads::Scope lock(DroneLauncher::communicator.mutex); \
+    snprintf(DroneLauncher::_logBuffer, sizeof(DroneLauncher::_logBuffer)/sizeof(char), __VA_ARGS__); \
+    DroneLauncher::communicator.nh.logerror(DroneLauncher::_logBuffer);}

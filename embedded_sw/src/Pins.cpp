@@ -2,6 +2,8 @@
 
 #include "Log.h"
 
+namespace DroneLauncher {
+
 namespace pins {
 
 Adafruit_MCP23X17 mcp;
@@ -23,3 +25,5 @@ void setup() {
     LOG_INFO("Pins initialized");
 }
 }  // namespace pins
+
+}  // namespace DroneLauncher

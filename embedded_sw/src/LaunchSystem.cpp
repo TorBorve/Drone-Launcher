@@ -6,6 +6,8 @@
 
 #define LS_UPDATE_INTERVAL 50
 
+namespace DroneLauncher {
+
 LaunchSystem launchSystem;
 
 LaunchSystem::LaunchSystem() : _launchUnits{
@@ -109,3 +111,5 @@ void LaunchSystem::unload(uint8_t launchUnitId) {
         _loadedDroneIds[launchUnitId] = 0;
     }
 }
+
+} // namespace DroneLauncher

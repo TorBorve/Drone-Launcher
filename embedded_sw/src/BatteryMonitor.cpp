@@ -2,6 +2,8 @@
 
 #include "Pins.h"
 
+namespace DroneLauncher {
+
 
 #define PIN_BAT_LEDS 25
 #define PIN_BAT_MEAS 23
@@ -63,3 +65,5 @@ void BatteryMonitor::readBat() {
 float BatteryMonitor::voltageToPercent(float voltage) {
     return min(1, max(0,(voltage - MIN_BAT_VOLTAGE) / (MAX_BAT_VOLTAGE - MIN_BAT_VOLTAGE)));
 }
+
+}  // namespace DroneLauncher
