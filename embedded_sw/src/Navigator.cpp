@@ -2,6 +2,8 @@
 
 #include "Log.h"
 
+namespace DroneLauncher {
+
 #define IMU_BNO08X_RESET -1
 #define IMU_UPDATE_INTERVAL 10
 
@@ -45,7 +47,7 @@ void IMU::update(uint32_t now) {
     }
 }
 
-void IMU::quaternionToEuler(float qr, float qi, float qj, float qk, euler_t* ypr, bool degrees = false) {
+void IMU::quaternionToEuler(float qr, float qi, float qj, float qk, euler_t* ypr, bool degrees) {
     float sqr = sq(qr);
     float sqi = sq(qi);
     float sqj = sq(qj);
@@ -62,7 +64,7 @@ void IMU::quaternionToEuler(float qr, float qi, float qj, float qk, euler_t* ypr
     }
 }
 
-void IMU::quaternionToEulerRV(sh2_RotationVectorWAcc_t* rotational_vector, euler_t* ypr, bool degrees = false) {
+void IMU::quaternionToEulerRV(sh2_RotationVectorWAcc_t* rotational_vector, euler_t* ypr, bool degrees) {
     quaternionToEuler(rotational_vector->real, rotational_vector->i, rotational_vector->j, rotational_vector->k, ypr, degrees);
 }
 
@@ -103,10 +105,11 @@ PositionArray GPS::getPos() {
     return pos;
 }
 
-bool GPS::getGPSFix() { 
-   return _tinyGPS.location.age() > GPS_MAX_TIMEOUT ? false : true; }
+bool GPS::getGPSFix() {
+    return _tinyGPS.location.age() > GPS_MAX_TIMEOUT ? false : true;
+}
 
-Navigator::Navigator() :  _gps{}, _imu{} {}
+Navigator::Navigator() : _gps{}, _imu{} {}
 
 void Navigator::init() {
     _imu.init();
@@ -133,3 +136,5 @@ euler_t Navigator::getOrientationEul(bool degrees) {
 quaternion_t Navigator::getOrientationQuat() {
     return _imu.getQuat();
 }
+
+}  // namespace DroneLauncher

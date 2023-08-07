@@ -1,7 +1,9 @@
 #include "Menu.h"
 
-#include "Log.h"
 #include "LaunchSystem.h"
+#include "Log.h"
+
+namespace DroneLauncher {
 
 #define MN_UPDATE_INTERVAL 30
 #define PIN_MENU_BACK 28
@@ -13,13 +15,10 @@
 
 Menu menu{PIN_MENU_BACK, PIN_MENU_ENTER, PIN_MENU_UP, PIN_MENU_DOWN};
 
-// Adafruit_LiquidCrystal lcd{0};
-
 const MD_Menu::mnuHeader_t Menu::mnuHdr[] = {
     {10, "Main Menu", 11, 12, 0},
     {11, "Load Drone", 20, 22, 0},
     {12, "Unload Drone", 30, 31, 0},
-    // {11, "Input Data", 20, 21, 0},
 };
 
 const MD_Menu::mnuItem_t Menu::mnuItm[] = {
@@ -166,7 +165,7 @@ MD_Menu::value_t *Menu::cbLoadLaunchUnitId(MD_Menu::mnuId_t id, bool bGet) {
 }
 
 MD_Menu::value_t *Menu::cbLoadConfirm(MD_Menu::mnuId_t id, bool bGet) {
-    if (!bGet) { // function called twice. Once with bGet = true, once with bGet = false
+    if (!bGet) {  // function called twice. Once with bGet = true, once with bGet = false
         return (nullptr);
     }
     Menu *globalMenuPtr = &menu;
@@ -186,7 +185,7 @@ MD_Menu::value_t *Menu::cbUnloadLaunchUnitId(MD_Menu::mnuId_t id, bool bGet) {
 }
 
 MD_Menu::value_t *Menu::cbUnloadConfirm(MD_Menu::mnuId_t id, bool bGet) {
-    if (!bGet) { // function called twice. Once with bGet = true, once with bGet = false
+    if (!bGet) {  // function called twice. Once with bGet = true, once with bGet = false
         return (nullptr);
     }
     Menu *globalMenuPtr = &menu;
@@ -194,3 +193,5 @@ MD_Menu::value_t *Menu::cbUnloadConfirm(MD_Menu::mnuId_t id, bool bGet) {
     launchSystem.unload(globalMenuPtr->_unloadLaunchUnitId - 1);
     return (nullptr);
 }
+
+}  // namespace DroneLauncher

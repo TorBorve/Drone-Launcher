@@ -5,9 +5,10 @@
 #include "Log.h"
 #include "Navigator.h"
 #include "Pins.h"
-
 #include "sensor_msgs/NavSatFix.h"
 #include "sensor_msgs/NavSatStatus.h"
+
+namespace DroneLauncher {
 
 #define COM_UPDATE_INTERVAL 100
 #define COM_STATUS_UPDATE_INTERVAL 1000
@@ -50,14 +51,14 @@ void Communicator::update(uint32_t now) {
 
     if (now - _prevStatusUpdate > COM_STATUS_UPDATE_INTERVAL) {
         _prevStatusUpdate = now;
-        updateStatus(now);
+        updateStatus();
         _statusPub.publish(&_statusMsg);
     }
     nh.spinOnce();  // Not thread safe since nh is used in logging.
     _aliveLed.update(now);
 }
 
-void Communicator::updateStatus(uint32_t now) {
+void Communicator::updateStatus() {
     _statusMsg.header.stamp = nh.now();
     _statusMsg.header.frame_id = "drone_launcher1";
     _statusMsg.armed = launchSystem.isArmed();
@@ -118,3 +119,5 @@ int8_t Communicator::toMsg(LaunchUnit::State state) {
             return -1;
     }
 }
+
+}  // namespace DroneLauncher

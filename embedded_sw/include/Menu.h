@@ -4,6 +4,9 @@
 #include "Buttons.h"
 #include "MD_Menu.h"
 
+namespace DroneLauncher {
+
+// Class for handling the LCD menu and buttons attached to it
 class Menu {
    public:
     Menu(uint8_t backBtnPin, uint8_t enterBtnPin, uint8_t upBtnPin, uint8_t downBtnPin);
@@ -17,7 +20,7 @@ class Menu {
     static MD_Menu::value_t *cbLoadLaunchUnitId(MD_Menu::mnuId_t id, bool bGet);
     static MD_Menu::value_t *cbLoadConfirm(MD_Menu::mnuId_t id, bool bGet);
     static MD_Menu::value_t *cbUnloadLaunchUnitId(MD_Menu::mnuId_t id, bool bGet);
-     static MD_Menu::value_t *cbUnloadConfirm(MD_Menu::mnuId_t id, bool bGet);
+    static MD_Menu::value_t *cbUnloadConfirm(MD_Menu::mnuId_t id, bool bGet);
 
     static const MD_Menu::mnuHeader_t mnuHdr[];
     static const MD_Menu::mnuItem_t mnuItm[];
@@ -37,3 +40,5 @@ class Menu {
 };
 
 extern Menu menu;
+
+}  // namespace DroneLauncher
