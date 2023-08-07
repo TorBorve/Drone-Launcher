@@ -91,17 +91,17 @@ void Communicator::updateStatus() {
 
 void Communicator::fireCallback(const std_msgs::UInt8& msg) {
     LOG_INFO("Received fire message");
-    launchSystem.fire(msg.data);
+    launchSystem.fire(msg.data - 1);
 }
 
 void Communicator::loadCallback(const std_msgs::UInt8& msg) {
     LOG_INFO("Received load message");
-    launchSystem.load(msg.data, 0);
+    launchSystem.load(msg.data - 1, 0);
 }
 
 void Communicator::unloadCallback(const std_msgs::UInt8& msg) {
     LOG_INFO("Received unload message");
-    launchSystem.unload(msg.data);
+    launchSystem.unload(msg.data - 1);
 }
 
 int8_t Communicator::toMsg(LaunchUnit::State state) {
