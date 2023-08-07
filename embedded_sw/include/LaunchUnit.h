@@ -31,6 +31,7 @@ class LaunchUnit {
     static void fireThread(void* arg);
     static void unloadThread(void* arg);
     void updateLed();
+    static float triggerAngle(bool servoOn, bool mirrored);
     State _state;
     Servo _safetyServo;
     Servo _triggerServo;

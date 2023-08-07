@@ -1,7 +1,6 @@
 #include "LaunchUnit.h"
 
 #include "Log.h"
-// #include "Communicator.h"
 
 namespace DroneLauncher {
 
@@ -32,11 +31,7 @@ void LaunchUnit::init() {
     _safetyServo.attach(_safetyServoPin);
     _triggerServo.attach(_triggerServoPin);
     _safetyServo.write(SAFETY_SERVO_ON_ANGLE);
-    if (_mirrored) {
-        _triggerServo.write(TRIGGER_SERVO_LOADED_ANGLE_MIRROR);
-    } else {
-        _triggerServo.write(TRIGGER_SERVO_LOADED_ANGLE);
-    }
+    _triggerServo.write(triggerAngle(true, _mirrored));
     updateLed();
 }
 
@@ -128,11 +123,7 @@ void LaunchUnit::loadThread(void* arg) {
     lu->_state = State::LOADING;
     lu->updateLed();
     lu->_safetyServo.write(SAFETY_SERVO_OFF_ANGLE);
-    if (lu->_mirrored) {
-        lu->_triggerServo.write(TRIGGER_SERVO_LOADED_ANGLE_MIRROR);
-    } else {
-        lu->_triggerServo.write(TRIGGER_SERVO_LOADED_ANGLE);
-    }
+    lu->_triggerServo.write(triggerAngle(true, lu->_mirrored));
     while (!(volatile bool)lu->_rearSwitch.getState()) {  // carefull about optimizer. Need to use volatile
         lu->_mutex.unlock();
         delay(100);
@@ -166,11 +157,7 @@ void LaunchUnit::fireThread(void* arg) {
         lu->_mutex.lock();
     }
     delay(1000);  // ensure that safety pin is completely off.
-    if (lu->_mirrored) {
-        lu->_triggerServo.write(TRIGGER_SERVO_RELEASED_ANGLE_MIRROR);
-    } else {
-        lu->_triggerServo.write(TRIGGER_SERVO_RELEASED_ANGLE);
-    }
+    lu->_triggerServo.write(triggerAngle(false, lu->_mirrored));
     while ((volatile bool)lu->_rearSwitch.getState()) {
         lu->_mutex.unlock();
         delay(100);
@@ -188,11 +175,7 @@ void LaunchUnit::unloadThread(void* arg) {
     lu->_mutex.lock();
     lu->_state = State::UNLOADING;
     lu->updateLed();
-    if (lu->_mirrored) {
-        lu->_triggerServo.write(TRIGGER_SERVO_RELEASED_ANGLE_MIRROR);
-    } else {
-        lu->_triggerServo.write(TRIGGER_SERVO_RELEASED_ANGLE);
-    }
+    lu->_triggerServo.write(triggerAngle(false, lu->_mirrored));
     while ((volatile bool)lu->_rearSwitch.getState()) {
         lu->_mutex.unlock();
         delay(100);
@@ -209,6 +192,22 @@ void LaunchUnit::unloadThread(void* arg) {
     lu->updateLed();
     lu->_mutex.unlock();
     LOG_INFO("Unload thread completed");
+}
+
+float LaunchUnit::triggerAngle(bool servoOn, bool mirrored) {
+    if (servoOn) {
+        if (mirrored) {
+            return TRIGGER_SERVO_LOADED_ANGLE_MIRROR;
+        } else {
+            return TRIGGER_SERVO_LOADED_ANGLE;
+        }
+    } else {
+        if (mirrored) {
+            return TRIGGER_SERVO_RELEASED_ANGLE_MIRROR;
+        } else {
+            return TRIGGER_SERVO_RELEASED_ANGLE;
+        }
+    }
 }
 
 }  // namespace DroneLauncher
