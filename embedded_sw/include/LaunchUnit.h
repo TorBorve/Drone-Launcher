@@ -1,35 +1,51 @@
 #pragma once
 
 #include <Servo.h>
-
 #include <TeensyThreads.h>
 
 #include "Buttons.h"
 #include "Leds.h"
 
+namespace DroneLauncher {
+
+// class for controlling a launch unit (one platform/chamber)
 class LaunchUnit {
-public:
-    enum class State : uint8_t {FIRED, LOADING, LOADED, FIRING, UNLOADING, ERROR};
-    LaunchUnit(uint8_t triggerServoPin, uint8_t safetyServoPin, uint8_t rearSwitchPin, uint8_t safetySwitchPin, uint8_t frontSwitchPin, CRGB& statusLed);
+   public:
+    enum class State : uint8_t { FIRED,
+                                 LOADING,
+                                 LOADED,
+                                 FIRING,
+                                 UNLOADING,
+                                 MANUAL,
+                                 ERROR };
+    LaunchUnit(uint8_t triggerServoPin, uint8_t safetyServoPin, uint8_t rearSwitchPin, uint8_t safetySwitchPin, CRGB& statusLed, bool mirrored);
     void init();
     void update(uint32_t now);
     void fire();
     void load();
     void unload();
+    void manualControl(bool safetyOn, bool triggerOn);
     State getState() const;
     void setArmed(bool isArmed);
-private:
+
+   private:
     static void loadThread(void* arg);
     static void fireThread(void* arg);
     static void unloadThread(void* arg);
     void updateLed();
+    static float triggerAngle(bool servoOn, bool mirrored);
     State _state;
     Servo _safetyServo;
     Servo _triggerServo;
+    const uint8_t _safetyServoPin;
+    const uint8_t _triggerServoPin;
     Switch _rearSwitch;
     Switch _safetySwitch;
-    Switch _frontSwitch;
     RGBLed _statusLed;
     bool _isArmed;
+    const bool _mirrored;  // if the trigger servo is mirrored (i.e. the servo is mounted on the other side of the platform)
+    uint32_t _prevUpdate;
     mutable Threads::Mutex _mutex;
 };
+
+}  // namespace DroneLauncher

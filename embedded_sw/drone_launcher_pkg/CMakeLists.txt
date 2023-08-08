@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0.2)
-project(drone_launcher_msgs_pkg)
+project(drone_launcher_pkg)
 
 find_package(catkin REQUIRED COMPONENTS
   roscpp
@@ -16,6 +16,7 @@ add_message_files(
   FILES
   LauncherStatus.msg
   LaunchUnitStatus.msg
+  ManualControl.msg
 )
 
 generate_messages(
@@ -27,7 +28,7 @@ generate_messages(
 
 catkin_package(
 #  INCLUDE_DIRS include
-#  LIBRARIES drone_launcher_msgs_pkg
+#  LIBRARIES drone_launcher_pkg
   CATKIN_DEPENDS message_runtime
 #  DEPENDS system_lib
 )

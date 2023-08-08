@@ -2,6 +2,8 @@
 
 #include "Pins.h"
 
+namespace DroneLauncher {
+
 #define BLINK_INTERVAL 500
 
 ////////////////////////////////////////
@@ -66,3 +68,5 @@ void RGBLed::writeToLed() {
         _actualColor = CRGB::Black;
     }
 }
+
+}  // namespace DroneLauncher

@@ -6,6 +6,8 @@
 // MCP23X17 Pin extensions
 ///////////////////////////
 
+namespace DroneLauncher {
+
 namespace pins {
 
 extern Adafruit_MCP23X17 mcp;
@@ -20,10 +22,9 @@ void setup();
 
 #define pinModeExt(pin, mode) (pin >= PINS_MCP_OFFSET) ? pins::mcp.pinMode(pin - PINS_MCP_OFFSET, mode) : pinMode(pin, mode)
 
-#define digitalWriteExt(pin, value)  (pin >= PINS_MCP_OFFSET) ? pins::mcp.digitalWrite(pin - PINS_MCP_OFFSET, value) : digitalWrite(pin, value)
+#define digitalWriteExt(pin, value) (pin >= PINS_MCP_OFFSET) ? pins::mcp.digitalWrite(pin - PINS_MCP_OFFSET, value) : digitalWrite(pin, value)
 
 #define digitalReadExt(pin) (pin >= PINS_MCP_OFFSET ? pins::mcp.digitalRead(pin - PINS_MCP_OFFSET) : digitalRead(pin))
-
 
 ///////////////////////////
 // Pin Mapping
@@ -80,3 +81,5 @@ void setup();
 #define PIN_F1R1_REAR_SWITCH (13 + PINS_MCP_OFFSET)
 #define PIN_F1R1_SAFETY_SWITCH (14 + PINS_MCP_OFFSET)
 #define PIN_F1R1_FRONT_SWITCH (15 + PINS_MCP_OFFSET)
+
+}  // namespace DroneLauncher
