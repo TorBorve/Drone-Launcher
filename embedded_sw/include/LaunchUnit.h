@@ -44,6 +44,7 @@ class LaunchUnit {
     RGBLed _statusLed;
     bool _isArmed;
     const bool _mirrored;  // if the trigger servo is mirrored (i.e. the servo is mounted on the other side of the platform)
+    uint32_t _prevUpdate;
     mutable Threads::Mutex _mutex;
 };
 

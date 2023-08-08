@@ -9,6 +9,7 @@
 #include "Pins.h"
 
 void setup() {
+    LOG_INFO("Setup start");
     DroneLauncher::pins::setup();
     DroneLauncher::launchSystem.init();
     DroneLauncher::batteryMonitor.init();

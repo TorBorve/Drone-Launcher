@@ -19,9 +19,10 @@ IMU::IMU() : _imuSensor{IMU_BNO08X_RESET}, _prevUpdate{0} {
 
 void IMU::init() {
     if (!_imuSensor.begin_I2C()) {
-        LOG_ERROR("Failed to find BNO08x chip");
-        while (1)
-            ;
+        while (1) {
+            LOG_ERROR("Failed to find BNO08x chip");
+            delay(1000);
+        }
     }
     enableReports();
 }

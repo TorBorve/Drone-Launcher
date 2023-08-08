@@ -10,6 +10,7 @@ namespace DroneLauncher {
 #define TRIGGER_SERVO_RELEASED_ANGLE_MIRROR 90
 #define SAFETY_SERVO_ON_ANGLE 170
 #define SAFETY_SERVO_OFF_ANGLE 130
+#define LU_UPDATE_INTERVAL 100
 
 LaunchUnit::LaunchUnit(uint8_t triggerServoPin,
                        uint8_t safetyServoPin,
@@ -23,7 +24,8 @@ LaunchUnit::LaunchUnit(uint8_t triggerServoPin,
                                         _safetySwitch{safetySwitchPin},
                                         _statusLed{statusLed},
                                         _isArmed{false},
-                                        _mirrored{mirrored} {}
+                                        _mirrored{mirrored},
+                                        _prevUpdate{0} {}
 
 void LaunchUnit::init() {
     _rearSwitch.init();
@@ -40,6 +42,10 @@ void LaunchUnit::update(uint32_t now) {
     _rearSwitch.poll(now);
     _safetySwitch.poll(now);
     _statusLed.update(now);
+    if (now - _prevUpdate > LU_UPDATE_INTERVAL) {
+        _prevUpdate = now;
+        updateLed();
+    }
 }
 
 void LaunchUnit::fire() {

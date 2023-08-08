@@ -37,6 +37,7 @@ void Communicator::init() {
             nh.subscribe(_fireSub);
             nh.subscribe(_loadSub);
             nh.subscribe(_unloadSub);
+            nh.subscribe(_manualControlSub);
         }
         _aliveLed.init();
         _init = true;
@@ -107,7 +108,7 @@ void Communicator::unloadCallback(const std_msgs::UInt8& msg) {
 
 void Communicator::manualControlCallback(const drone_launcher_pkg::ManualControl& msg) {
     LOG_INFO("Received manual control message");
-    launchSystem.manualControl(msg.launchUnitId, msg.safetyServoOn, msg.triggerServoOn);
+    launchSystem.manualControl(msg.launchUnitId - 1, msg.safetyServoOn, msg.triggerServoOn);
 }
 
 int8_t Communicator::toMsg(LaunchUnit::State state) {
@@ -122,6 +123,8 @@ int8_t Communicator::toMsg(LaunchUnit::State state) {
             return drone_launcher_pkg::LaunchUnitStatus::STATE_FIRING;
         case LaunchUnit::State::UNLOADING:
             return drone_launcher_pkg::LaunchUnitStatus::STATE_UNLOADING;
+        case LaunchUnit::State::MANUAL:
+            return drone_launcher_pkg::LaunchUnitStatus::STATE_MANUAL;
         case LaunchUnit::State::ERROR:
             return drone_launcher_pkg::LaunchUnitStatus::STATE_ERROR;
         default:
