@@ -66,7 +66,7 @@ A platform for launching drones remotely.
 
 4. **Clone**
 
-    The odroid also need to have this repository to work. Clone it in a ROS workspace whereever you would like. If you do not have internet connection due to the Radio network configuration you can use something like sftp to transfer the repository from you computer to the odroid. Please refere to this guide: [LINK](https://www.servermania.com/kb/articles/how-to-use-sftp-commands)
+    The odroid also need to have this repository to work. Clone it into the foler `catkin_ws/src`. You can copy your repo over to the odroid by running: ```./scripts/copy_files_and_compile_odroid.sh```. The script will ask you for the password of the odroid a few times. The file transfer and compile will take some time.
 
 5. **Flash code from Odroid (Optional)**
 
