@@ -8,7 +8,7 @@ namespace DroneLauncher {
 #define TRIGGER_SERVO_RELEASED_ANGLE 90
 #define TRIGGER_SERVO_LOADED_ANGLE_MIRROR 0
 #define TRIGGER_SERVO_RELEASED_ANGLE_MIRROR 90
-#define SAFETY_SERVO_ON_ANGLE 170
+#define SAFETY_SERVO_ON_ANGLE 179
 #define SAFETY_SERVO_OFF_ANGLE 130
 #define LU_UPDATE_INTERVAL 100
 
@@ -179,6 +179,7 @@ void LaunchUnit::loadThread(void* arg) {
 
 void LaunchUnit::fireThread(void* arg) {
     LOG_INFO("Fire thread started");
+    uint32_t startTime = millis();
     LaunchUnit* lu = (LaunchUnit*)arg;
     lu->_mutex.lock();
     lu->_state = State::FIRING;
@@ -186,10 +187,20 @@ void LaunchUnit::fireThread(void* arg) {
     lu->_safetyServo.write(SAFETY_SERVO_OFF_ANGLE);
     while ((volatile bool)lu->_safetySwitch.getState()) {
         lu->_mutex.unlock();
-        delay(100);
+        delay(50);
         lu->_mutex.lock();
     }
-    delay(1000);  // ensure that safety pin is completely off.
+    uint32_t safteyDownTime = millis();
+    uint32_t timePassed = safteyDownTime - startTime;
+    uint32_t releaseTime = startTime + 2000;
+    if (releaseTime <  safteyDownTime + 500) { // ensure that safety is completely of when we fire
+        releaseTime = safteyDownTime + 1000;
+    }
+    while(millis() < releaseTime) { // ensure that safety is completely down and fire several threads at approx same time
+        lu->_mutex.unlock();
+        delay(10);
+        lu->_mutex.lock();
+    }
     lu->_triggerServo.write(triggerAngle(false, lu->_mirrored));
     while ((volatile bool)lu->_rearSwitch.getState()) {
         lu->_mutex.unlock();
