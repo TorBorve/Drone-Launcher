@@ -59,7 +59,7 @@ void LaunchUnit::fire() {
 
 void LaunchUnit::load() {
     Threads::Scope lock(_mutex);
-    if (_state == State::FIRED && !_isArmed && !_rearSwitch.getState()) {
+    if (_state == State::FIRED && !_isArmed) {
         threads.addThread(LaunchUnit::loadThread, this);
     } else {
         LOG_WARN("Load acceptance test failed")
