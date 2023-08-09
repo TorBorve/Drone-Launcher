@@ -50,7 +50,7 @@ void LaunchUnit::update(uint32_t now) {
 
 void LaunchUnit::fire() {
     Threads::Scope lock(_mutex);
-    if (_state == State::LOADED && _isArmed && _rearSwitch.getState() && _safetySwitch.getState()) {
+    if (_state == State::LOADED && _isArmed && _safetySwitch.getState()) {
         threads.addThread(fireThread, this);
     } else {
         LOG_WARN("Fire acceptance test failed")
