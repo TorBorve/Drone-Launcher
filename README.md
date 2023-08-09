@@ -43,7 +43,7 @@ A platform for launching drones remotely.
 
 5. **Static IP**
 
-    Connect to the Drone Launcher we need to use the Rajant Radios. For this we need to specify a static ip. This IP should be in the in the form *192.168.12.xxx*. Depending on your OS the process will be different for achiveing this. 
+    Connect to the Drone Launcher we need to use the Rajant Radios. For this we need to specify a static ip. This IP should be in the in the form *192.168.12.69*. If it is not this specific IP you need to update the *connect_odroid_ros_master.bash* script with your ip. Depending on your OS the process will be different for achiveing this. I used ```nm-connection-editor```.
 
 ## Odroid C2
 
@@ -66,7 +66,7 @@ A platform for launching drones remotely.
 
 4. **Clone**
 
-    The odroid also need to have this repository to work. Clone it in a ROS workspace whereever you would like.
+    The odroid also need to have this repository to work. Clone it in a ROS workspace whereever you would like. If you do not have internet connection due to the Radio network configuration you can use something like sftp to transfer the repository from you computer to the odroid. Please refere to this guide: [LINK](https://www.servermania.com/kb/articles/how-to-use-sftp-commands)
 
 5. **Flash code from Odroid (Optional)**
 
@@ -110,7 +110,7 @@ A platform for launching drones remotely.
 ### Your computer
 
 1. **Build ROS pkg**
-    We need to build our custom messages. This is done using ```catkin build``` (catkin_make should also work). After that we need to make header files for the messages that the Teensy will have acceess to. ```rosrun rosserial_client make_libraries <GIT_REPO_DIR>/embedded_sw/lib drone_launcher_pkg```
+    We need to build our custom messages. This is done using ```catkin build``` (catkin_make should also work). Then you need to source your workspace, run: ```source devel/setup.bash``` After that we need to make header files for the messages that the Teensy will have acceess to. ```rosrun rosserial_client make_libraries <GIT_REPO_DIR>/embedded_sw/lib drone_launcher_pkg```
 
 3. **Flash code to Teensy**
     Open a vscode window in the *embedded_ws/* folder. If platformio is installed correctly you should then see some new optinon in the bottom menu bar. After connecting the Teensy to you computer you can press the upload arrow to compile and flash code to the Teensy. See picture.
