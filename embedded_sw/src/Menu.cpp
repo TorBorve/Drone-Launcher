@@ -1,6 +1,9 @@
 #include "Menu.h"
 
+#include "LaunchSystem.h"
 #include "Log.h"
+
+namespace DroneLauncher {
 
 #define MN_UPDATE_INTERVAL 30
 #define PIN_MENU_BACK 28
@@ -12,13 +15,10 @@
 
 Menu menu{PIN_MENU_BACK, PIN_MENU_ENTER, PIN_MENU_UP, PIN_MENU_DOWN};
 
-// Adafruit_LiquidCrystal lcd{0};
-
 const MD_Menu::mnuHeader_t Menu::mnuHdr[] = {
     {10, "Main Menu", 11, 12, 0},
     {11, "Load Drone", 20, 22, 0},
     {12, "Unload Drone", 30, 31, 0},
-    // {11, "Input Data", 20, 21, 0},
 };
 
 const MD_Menu::mnuItem_t Menu::mnuItm[] = {
@@ -33,10 +33,10 @@ const MD_Menu::mnuItem_t Menu::mnuItm[] = {
 };
 
 const MD_Menu::mnuInput_t Menu::mnuInp[] = {
-    {20, "DroneID", MD_Menu::INP_INT, Menu::cbLoadDroneId, 4, 1, 0, 10, 0, 10, nullptr},
-    {21, "LaunchID", MD_Menu::INP_INT, Menu::cbLoadLaunchUnitId, 4, 1, 0, 6, 0, 10, nullptr},
+    {20, "DroneID", MD_Menu::INP_INT, Menu::cbLoadDroneId, 4, 1, 0, 15, 0, 10, nullptr},
+    {21, "LaunchID", MD_Menu::INP_INT, Menu::cbLoadLaunchUnitId, 4, 1, 0, LS_NUM_UNITS, 0, 10, nullptr},
     {22, "Confirm", MD_Menu::INP_RUN, Menu::cbLoadConfirm, 0, 0, 0, 0, 0, 0, nullptr},
-    {30, "LaunchID", MD_Menu::INP_INT, Menu::cbUnloadLaunchUnitId, 4, 1, 0, 6, 0, 10, nullptr},
+    {30, "LaunchID", MD_Menu::INP_INT, Menu::cbUnloadLaunchUnitId, 4, 1, 0, LS_NUM_UNITS, 0, 10, nullptr},
     {31, "Confirm", MD_Menu::INP_RUN, Menu::cbUnloadConfirm, 0, 0, 0, 0, 0, 0, nullptr},
 
 };
@@ -48,15 +48,16 @@ Menu::Menu(uint8_t backBtnPin,
                                        mnuHdr, ARRAY_SIZE(mnuHdr),
                                        mnuItm, ARRAY_SIZE(mnuItm),
                                        mnuInp, ARRAY_SIZE(mnuInp)},
-                                 _loadDroneId{0},
-                                 _loadLaunchUnitId{0},
-                                 _unloadLaunchUnitId{0},
+                                 _loadDroneId{1},
+                                 _loadLaunchUnitId{1},
+                                 _unloadLaunchUnitId{1},
                                  _lcd{0},
                                  _backBtn{backBtnPin},
                                  _enterBtn{enterBtnPin},
                                  _upBtn{upBtnPin},
                                  _downBtn{downBtnPin},
-                                 _prevUpdate{0} {}
+                                 _prevUpdate{0},
+                                 _init{false} {}
 
 void Menu::init() {
     _backBtn.init();
@@ -71,12 +72,17 @@ void Menu::init() {
     display(MD_Menu::DISP_INIT, nullptr);
     _menu.begin();
     _menu.setMenuWrap(true);
-    _menu.setTimeout(10000);
+    _menu.setTimeout(0);
     _menu.setAutoStart(true);
     _menu.runMenu(true);
+    _init = true;
 }
 
 void Menu::update(uint32_t now) {
+    if (!_init) {
+        LOG_ERROR("Menu not initialized");
+        return;
+    }
     _backBtn.poll(now);
     _upBtn.poll(now);
     _downBtn.poll(now);
@@ -165,12 +171,12 @@ MD_Menu::value_t *Menu::cbLoadLaunchUnitId(MD_Menu::mnuId_t id, bool bGet) {
 }
 
 MD_Menu::value_t *Menu::cbLoadConfirm(MD_Menu::mnuId_t id, bool bGet) {
-    if (!bGet) { // function called twice. Once with bGet = true, once with bGet = false
+    if (!bGet) {  // function called twice. Once with bGet = true, once with bGet = false
         return (nullptr);
     }
     Menu *globalMenuPtr = &menu;
     LOG_INFO("Menu triggered load. DroneID: %d, LaunchUnitID: %d", globalMenuPtr->_loadDroneId, globalMenuPtr->_loadLaunchUnitId);
-    launchSystem.load(globalMenuPtr->_loadDroneId, globalMenuPtr->_loadLaunchUnitId);
+    launchSystem.load(globalMenuPtr->_loadLaunchUnitId - 1, globalMenuPtr->_loadDroneId);
     return (nullptr);
 }
 
@@ -185,11 +191,13 @@ MD_Menu::value_t *Menu::cbUnloadLaunchUnitId(MD_Menu::mnuId_t id, bool bGet) {
 }
 
 MD_Menu::value_t *Menu::cbUnloadConfirm(MD_Menu::mnuId_t id, bool bGet) {
-    if (!bGet) { // function called twice. Once with bGet = true, once with bGet = false
+    if (!bGet) {  // function called twice. Once with bGet = true, once with bGet = false
         return (nullptr);
     }
     Menu *globalMenuPtr = &menu;
     LOG_INFO("Menu triggered unload, LaunchUnitID: %d", globalMenuPtr->_unloadLaunchUnitId);
-    launchSystem.unload(globalMenuPtr->_unloadLaunchUnitId);
+    launchSystem.unload(globalMenuPtr->_unloadLaunchUnitId - 1);
     return (nullptr);
 }
+
+}  // namespace DroneLauncher

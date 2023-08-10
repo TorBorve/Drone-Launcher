@@ -5,3 +5,4 @@
 **/*.lck
 embedded_sw/lib/ros_lib/
 embedded_sw/.gitignore
+build/
